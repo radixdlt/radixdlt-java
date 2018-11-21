@@ -312,23 +312,23 @@ public class RadixApplicationAPI {
 		return executeTransaction(transferTokensAction, uniqueProperty);
 	}
 
-	// TODO: make this more generic
-	private Result executeTransaction(TransferTokensAction transferTokensAction, @Nullable UniqueProperty uniqueProperty) {
-		Objects.requireNonNull(transferTokensAction);
-
+	public Single<UnsignedAtom> mapToAtom(TransferTokensAction transferTokensAction, UniqueProperty uniqueProperty) {
 		pull();
 
 		AtomBuilder atomBuilder = atomBuilderSupplier.get();
 
-		Single<UnsignedAtom> unsignedAtom =
-			uniquePropertyTranslator.translate(uniqueProperty, atomBuilder)
+		return uniquePropertyTranslator.translate(uniqueProperty, atomBuilder)
 			.andThen(tokenTransferTranslator.translate(transferTokensAction, atomBuilder))
 			.andThen(Single.fromCallable(
 				() -> atomBuilder.buildWithPOWFee(universe.getMagic(), transferTokensAction.getFrom().getPublicKey()))
 			);
+	}
 
-		ConnectableObservable<AtomSubmissionUpdate> updates =
-			unsignedAtom
+	// TODO: make this more generic
+	private Result executeTransaction(TransferTokensAction transferTokensAction, @Nullable UniqueProperty uniqueProperty) {
+		Objects.requireNonNull(transferTokensAction);
+
+		ConnectableObservable<AtomSubmissionUpdate> updates = this.mapToAtom(transferTokensAction, uniqueProperty)
 			.flatMap(identity::sign)
 			.flatMapObservable(ledger.getAtomSubmitter()::submitAtom)
 			.replay();
