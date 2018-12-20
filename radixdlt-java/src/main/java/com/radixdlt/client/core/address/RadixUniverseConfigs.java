@@ -22,6 +22,10 @@ public final class RadixUniverseConfigs {
         return RadixUniverseConfig.fromInputStream(getConfigFileStream("alphanet.json"));
     }
 
+    public static RadixUniverseConfig getAlphanet2() {
+        return RadixUniverseConfig.fromInputStream(getConfigFileStream("alphanet2.json"));
+    }
+
     private static InputStream getConfigFileStream(String name) {
         String source = "/universe/" + name;
         return RadixUniverseConfig.class.getResourceAsStream(source);

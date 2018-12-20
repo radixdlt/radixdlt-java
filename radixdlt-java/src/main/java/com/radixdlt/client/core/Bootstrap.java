@@ -13,7 +13,7 @@ public enum Bootstrap implements BootstrapConfig {
 		new PeersFromNodeFinder("https://alphanet.radixdlt.com/node-finder", 443)
 	),
 	ALPHANET2(
-		RadixUniverseConfigs.getAlphanet(),
+		RadixUniverseConfigs.getAlphanet2(),
 		new PeersFromNodeFinder("https://alphanet2.radixdlt.com/node-finder", 443)
 	),
 	HIGHGARDEN(
