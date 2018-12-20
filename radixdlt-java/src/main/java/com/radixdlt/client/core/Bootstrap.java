@@ -12,6 +12,10 @@ public enum Bootstrap implements BootstrapConfig {
 		RadixUniverseConfigs.getAlphanet(),
 		new PeersFromNodeFinder("https://alphanet.radixdlt.com/node-finder", 443)
 	),
+	ALPHANET2(
+		RadixUniverseConfigs.getAlphanet(),
+		new PeersFromNodeFinder("https://alphanet2.radixdlt.com/node-finder", 443)
+	),
 	HIGHGARDEN(
 		RadixUniverseConfigs.getHighgarden(),
 		new PeersFromNodeFinder("https://highgarden.radixdlt.com/node-finder", 443)
