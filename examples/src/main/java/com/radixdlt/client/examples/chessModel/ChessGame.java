@@ -44,11 +44,8 @@ public class ChessGame {
     private ChessGame(RadixUniverse universe, RadixAddress gameAddress, ECKeyPair myKeys, RadixAddress otherPlayer) {
         this.universe = universe;
         this.gameAddress = Objects.requireNonNull(gameAddress, "gameAddress is required");
-
-
         RadixAddress myAddress = new RadixAddress(universe.getConfig(), myKeys.getPublicKey());
-
-        this.whiteAddress = Objects.requireNonNull(whiteAddress, "whiteAddress is required");
+        this.whiteAddress = Objects.requireNonNull(myAddress, "myAddress was null");
         this.blackAddress = Objects.requireNonNull(otherPlayer, "otherPlayer is required");
         this.gameUID = new EUID(Hash.random().toByteArray());
         this.gameState = ChessBoardParticle.State.ACTIVE;
@@ -95,6 +92,7 @@ public class ChessGame {
         ECPublicKey otherPlayerPublicKey = otherPlayer.getPublicKey();
         ECPublicKey sharedKey = myself.diffieHellman(otherPlayerPublicKey);
         RadixAddress gameAddress = new RadixAddress(universe.getConfig(), sharedKey);
+
         return new ChessGame(universe, gameAddress, myKeys, otherPlayer);
     }
 }

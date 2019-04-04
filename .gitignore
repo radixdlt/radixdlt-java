@@ -11,3 +11,4 @@ bin/
 # IntelliJ project files
 .idea
 *.iml
+logs/
