@@ -5,9 +5,14 @@ import com.google.gson.GsonBuilder;
 import com.radixdlt.client.application.identity.RadixIdentities;
 import com.radixdlt.client.application.identity.RadixIdentity;
 import com.radixdlt.client.application.translate.tokens.TokenBalanceState;
+import com.radixdlt.client.application.translate.tokens.TokenDefinitionReference;
+import com.radixdlt.client.atommodel.accounts.RadixAddress;
 import com.radixdlt.client.core.Bootstrap;
+import io.reactivex.disposables.Disposable;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -68,13 +73,27 @@ public final class RadixCLI {
 				}
 
 				RadixApplicationAPI api = RadixApplicationAPI.create(Bootstrap.LOCALHOST, identity);
+				Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
 				if (arguments.get(0).equals("get")) {
-					TokenBalanceState tokenBalanceState = api.getState(TokenBalanceState.class, api.getMyAddress())
-						.blockingFirst();
-					Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+					TokenBalanceState tokenBalanceState = api.getState(TokenBalanceState.class, api.getMyAddress()).blockingFirst();
 					System.out.println(gson.toJson(tokenBalanceState));
 					System.exit(0);
+				} else if (arguments.get(0).equals("send")) {
+					if (arguments.size() != 5 || !arguments.get(3).equals("to")) {
+						System.err.println("send <amount> <token> to <address>");
+						System.exit(-1);
+					} else {
+						BigDecimal amount = new BigDecimal(arguments.get(1));
+						String[] ref = arguments.get(2).split("/");
+						RadixAddress tokenAddress = RadixAddress.from(ref[0]);
+						String iso = ref[2];
+						RadixAddress address = RadixAddress.from(arguments.get(4));
+						api.transferTokens(address, amount, TokenDefinitionReference.of(tokenAddress, iso))
+							.toCompletable()
+							.blockingAwait();
+						System.exit(0);
+					}
 				} else {
 					System.out.println("My address: " + api.getMyAddress());
 					System.out.println("My public key: " + api.getMyPublicKey());

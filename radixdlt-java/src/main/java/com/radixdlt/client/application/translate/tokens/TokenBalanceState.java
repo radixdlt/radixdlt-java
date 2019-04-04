@@ -23,13 +23,15 @@ import org.radix.utils.UInt256s;
  */
 public class TokenBalanceState implements ApplicationState {
 	public static class Balance {
-		@Expose
 		private final BigInteger balance;
+		@Expose
+		private final BigDecimal amount;
 		private final BigInteger granularity;
 		private final ImmutableMap<RadixHash, ConsumableTokens> consumables;
 
 		private Balance(BigInteger balance, BigInteger granularity, Map<RadixHash, ConsumableTokens> consumables) {
 			this.balance = balance;
+			this.amount = TokenUnitConversions.subunitsToUnits(balance);
 			this.granularity = granularity;
 			this.consumables = ImmutableMap.copyOf(consumables);
 		}
