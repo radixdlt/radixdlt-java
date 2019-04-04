@@ -116,6 +116,17 @@ public final class RadixCLI {
 								System.out.flush();
 							});
 						TimeUnit.SECONDS.sleep(3);
+					} else if (arguments.get(1).equals("newmessages")) {
+						final long start = System.currentTimeMillis();
+						api.pull();
+						api.getMessages()
+							.filter(m -> m.getTimestamp() > start)
+							.map(gson::toJson)
+							.subscribe(a -> {
+								System.out.println(a);
+								System.out.flush();
+							});
+						TimeUnit.SECONDS.sleep(3);
 					}
 				} else if (arguments.get(0).equals("send")) {
 					if (arguments.get(1).equals("tokens")) {
@@ -129,7 +140,6 @@ public final class RadixCLI {
 							String iso = ref[2];
 							RadixAddress address = RadixAddress.from(arguments.get(5));
 							api.transferTokens(address, amount, TokenDefinitionReference.of(tokenAddress, iso)).toCompletable().blockingAwait();
-							System.exit(0);
 						}
 					} else if (arguments.get(1).equals("message")) {
 						if (arguments.size() != 5 || !arguments.get(3).equals("to")) {
@@ -140,11 +150,13 @@ public final class RadixCLI {
 						final RadixAddress to = RadixAddress.from(arguments.get(4));
 
 						api.sendMessage(message.getBytes(RadixConstants.STANDARD_CHARSET), false, to).toCompletable().blockingAwait();
-						System.exit(0);
 					}
+					System.exit(0);
 				} else if (arguments.get(0).equals("myaddr")) {
 					System.out.println(api.getMyAddress());
 					System.exit(0);
+				} else if (arguments.get(0).equals("nativetoken")) {
+					System.out.println(api.getNativeTokenRef().getAddress() + "/tokens/" + api.getNativeTokenRef().getSymbol());
 				} else {
 					System.out.println("My address: " + api.getMyAddress());
 					System.out.println("My public key: " + api.getMyPublicKey());
