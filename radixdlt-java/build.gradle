@@ -60,6 +60,10 @@ checkstyleTest {
     configFile rootProject.file('.checkstyle_test.xml')
 }
 
+shadowJar {
+    shadowJar.archiveName = 'radixdlt-java.jar'
+}
+
 jar {
     manifest {
         attributes(
