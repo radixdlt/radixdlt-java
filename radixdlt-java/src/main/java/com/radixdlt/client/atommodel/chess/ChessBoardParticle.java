@@ -76,17 +76,16 @@ public final class ChessBoardParticle extends Particle {
         this.blackAddress = Objects.requireNonNull(blackAddress, "blackAddress is required");
         this.nonce = System.nanoTime();
         this.gameUID = Objects.requireNonNull(gameUID, "gameUID is required");
-        this.gameState = State.ACTIVE;
+        this.gameState = gameState;
     }
 
-    public static ChessBoardParticle newGame(RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID) {
-        return new ChessBoardParticle(gameAddress, whiteAddress, blackAddress, gameUID, "");
+    public static ChessBoardParticle newGame(RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID, String boardState) {
+        return new ChessBoardParticle(boardState, gameAddress, whiteAddress, blackAddress, gameUID, State.INITIAL);
     }
 
-    public static ChessBoardParticle fromPrevious(ChessBoardParticle prev, String move) {
-        return new ChessBoardParticle(prev.boardState, prev.gameAddress, prev.whiteAddress, prev.blackAddress, prev.gameUID, move);
+    public static ChessBoardParticle fromPrevious(ChessBoardParticle prev, String newBoardState) {
+        return new ChessBoardParticle(newBoardState, prev.gameAddress, prev.whiteAddress, prev.blackAddress, prev.gameUID, prev.gameState);
     }
-
 
     public String getBoardState() {
         return boardState;
