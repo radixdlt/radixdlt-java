@@ -1,6 +1,7 @@
 package com.radixdlt.client.application.translate.tokens;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.annotations.Expose;
 import com.radixdlt.client.application.translate.ApplicationState;
 import com.radixdlt.client.core.atoms.RadixHash;
 import com.radixdlt.client.core.atoms.particles.Spin;
@@ -22,6 +23,7 @@ import org.radix.utils.UInt256s;
  */
 public class TokenBalanceState implements ApplicationState {
 	public static class Balance {
+		@Expose
 		private final BigInteger balance;
 		private final BigInteger granularity;
 		private final ImmutableMap<RadixHash, ConsumableTokens> consumables;
@@ -96,6 +98,7 @@ public class TokenBalanceState implements ApplicationState {
 		}
 	}
 
+	@Expose
 	private final ImmutableMap<TokenDefinitionReference, Balance> balance;
 
 	public TokenBalanceState() {
