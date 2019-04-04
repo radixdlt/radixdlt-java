@@ -22,37 +22,43 @@ import pl.art.lach.mateusz.javaopenchess.utils.Settings;
 import java.util.ArrayList;
 
 public class ChessApp extends JChessApp {
-    private JChessView javaChessView;
+	private JChessView javaChessView;
     private Game game;
     private DataExporter fenExporter;
     private DataImporter fenImporter;
     private ChessGame radixChess;
     private MiniAtomSubmitter submitter;
 
-    private static String radixAddressOfOtherPlayer;
+	private static boolean joining;
+    private static String myName;
+    private static String otherName;
 
     public static void main(String[] args) {
-        if (args.length == 0) {
+        if (args.length < 2) {
             throw new IllegalArgumentException("Not enough arguments, need to specify address");
         }
 
         launch(ChessApp.class, args);
-        ChessApp.radixAddressOfOtherPlayer = args[0];
+        ChessApp.myName = args[0];
+        ChessApp.otherName = args[1];
+        ChessApp.joining = args.length > 2;
     }
 
     @Override
     protected void startup() {
         RadixUniverse universe = RadixUniverse.create(Bootstrap.LOCALHOST);
-        RadixAddress addressOfOtherPlayer = RadixAddress.from(ChessApp.radixAddressOfOtherPlayer);
-        RadixIdentity myIdentity = RadixIdentities.createNew();
+        RadixAddress otherAddress = universe.getAddressFrom(KeyUtils.fromSeed(myName).getPublicKey());
+        RadixIdentity myIdentity = RadixIdentities.from(KeyUtils.fromSeed(myName));
         RadixAddress myAddress = universe.getAddressFrom(myIdentity.getPublicKey());
+        System.out.println("Me: " + myAddress.toString());
+        System.out.println("Other: " + otherAddress.toString());
         this.submitter = new MiniAtomSubmitter(myIdentity);
         this.submitter.setUp();
         this.fenExporter = DataTransferFactory.getExporterInstance(TransferFormat.FEN);
         this.fenImporter = DataTransferFactory.getImporterInstance(TransferFormat.FEN);
 
         HumanPlayer selfPlayer = new HumanPlayer(myAddress.toString().substring(0, 5), Colors.WHITE);
-        NetworkPlayer otherPlayer = new NetworkPlayer(addressOfOtherPlayer.toString().substring(0, 5), Colors.BLACK);
+        NetworkPlayer otherPlayer = new NetworkPlayer(otherAddress.toString().substring(0, 5), Colors.BLACK);
 
         this.game = new Game() {
             @Override
@@ -73,9 +79,14 @@ public class ChessApp extends JChessApp {
         this.game.setSettings(gameSettings);
         this.game.newGame();
 
-        this.radixChess = ChessGame.create(myIdentity, addressOfOtherPlayer, spunParticles
+        this.radixChess = joining ?
+	        ChessGame.join(myIdentity, otherAddress, spunParticles
+		        -> this.submitter.submitAtom(spunParticles).subscribe(), universe) :
+	        ChessGame.create(myIdentity, otherAddress, spunParticles
             -> this.submitter.submitAtom(spunParticles).subscribe(), universe);
-        this.radixChess.initialiseBoard(getBoardOnFEN());
+        if (!joining) {
+	        this.radixChess.initialiseBoard(getBoardOnFEN());
+        }
         this.radixChess.chessboardParticles()
             .subscribe(board -> {
                 if (this.radixChess.onBoardChanged(board)) {

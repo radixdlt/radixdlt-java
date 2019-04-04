@@ -59,6 +59,11 @@ public class RadixIdentities {
 		return new BaseRadixIdentity(ecKeyPair);
 	}
 
+	// TODO hack
+	public static RadixIdentity from(ECKeyPair keyPair) {
+		return new BaseRadixIdentity(keyPair);
+	}
+
 	/**
 	 * Loads or creates an unencrypted file containing a private key and returns
 	 * the associated radix identity
