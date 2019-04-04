@@ -21,9 +21,13 @@ public final class ChessMoveParticle extends Particle {
     @DsonOutput(DsonOutput.Output.ALL)
     private EUID gameUID;
 
-    public ChessMoveParticle(RadixAddress gameAddress, EUID gameUID, String move) {
+    private ChessMoveParticle(RadixAddress gameAddress, EUID gameUID, String move) {
         this.gameAddress = gameAddress;
         this.gameUID = gameUID;
         this.move = move;
+    }
+
+    public static ChessMoveParticle move(ChessBoardParticle board, String move) {
+        return new ChessMoveParticle(board.getGameAddress(), board.getGameUID(), move);
     }
 }

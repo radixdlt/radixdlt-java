@@ -22,6 +22,10 @@ public final class ChessBoardParticle extends Particle {
     @DsonOutput(DsonOutput.Output.ALL)
     private String boardState;
 
+    public RadixAddress getGameAddress() {
+        return gameAddress;
+    }
+
     @JsonProperty("gameAddress")
     @DsonOutput(DsonOutput.Output.ALL)
     private RadixAddress gameAddress;
@@ -33,6 +37,10 @@ public final class ChessBoardParticle extends Particle {
     @JsonProperty("blackAddress")
     @DsonOutput(DsonOutput.Output.ALL)
     private RadixAddress blackAddress;
+
+    public EUID getGameUID() {
+        return gameUID;
+    }
 
     @JsonProperty("gameUID")
     @DsonOutput(DsonOutput.Output.ALL)
@@ -59,29 +67,24 @@ public final class ChessBoardParticle extends Particle {
         this.gameState = State.from(state);
     }
 
-    public ChessBoardParticle(RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID) {
+    private ChessBoardParticle(RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID, String boardState) {
         super();
         this.gameAddress = Objects.requireNonNull(gameAddress, "gameAddress is required");
         this.whiteAddress = Objects.requireNonNull(whiteAddress, "whiteAddress is required");
         this.blackAddress = Objects.requireNonNull(blackAddress, "blackAddress is required");
         this.nonce = System.nanoTime();
-        this.gameUID = gameUID;
+        this.gameUID = Objects.requireNonNull(gameUID, "gameUID is required");
         this.gameState = State.ACTIVE;
+        this.boardState = Objects.requireNonNull(boardState, "boardState is required");
     }
 
+    public static ChessBoardParticle newGame(RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID) {
+        return new ChessBoardParticle(gameAddress, whiteAddress, blackAddress, gameUID, "");
+    }
 
-//    public ChessBoardParticle makeMove(name.ulbricht.chess.game.Board nextBoardState) {
-//
-//    }
-
-//    public void foo() {
-//        GameContext gameContext = new GameContext(GameMode.HUMAN_VS_HUMAN, VariationType.NORMAL);
-//        Board board = new Board(gameContext, true);
-//        Square fromSquare = Square.valueOf("apa");
-//        Square toSquare = Square.valueOf("apa");
-//        Move move = new Move(fromSquare, toSquare);
-//        board.doMove(move, true);
-//    }
+    public static ChessBoardParticle fromPrevious(ChessBoardParticle prev, String move) {
+        return new ChessBoardParticle(prev.gameAddress, prev.whiteAddress, prev.blackAddress, prev.gameUID, move);
+    }
 
 
     public String getBoardState() {
