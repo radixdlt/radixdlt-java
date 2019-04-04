@@ -3,7 +3,7 @@ package com.radixdlt.client.examples;
 import com.radixdlt.client.application.translate.tokens.TokenUnitConversions;
 import java.math.BigDecimal;
 
-import com.radixdlt.client.application.RadixApplicationAPI;
+import com.radixdlt.client.RadixApplicationAPI;
 import com.radixdlt.client.application.identity.RadixIdentities;
 import com.radixdlt.client.application.identity.RadixIdentity;
 import com.radixdlt.client.application.translate.tokens.CreateTokenAction.TokenSupplyType;

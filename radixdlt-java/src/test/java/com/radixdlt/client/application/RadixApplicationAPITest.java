@@ -2,6 +2,7 @@ package com.radixdlt.client.application;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.radixdlt.client.RadixApplicationAPI;
 import com.radixdlt.client.core.ledger.ParticleObservation;
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -10,8 +11,8 @@ import java.util.stream.Stream;
 import org.junit.Test;
 
 import com.google.gson.JsonObject;
-import com.radixdlt.client.application.RadixApplicationAPI.RadixApplicationAPIBuilder;
-import com.radixdlt.client.application.RadixApplicationAPI.Result;
+import com.radixdlt.client.RadixApplicationAPI.RadixApplicationAPIBuilder;
+import com.radixdlt.client.RadixApplicationAPI.Result;
 import com.radixdlt.client.application.identity.RadixIdentity;
 import com.radixdlt.client.application.translate.Action;
 import com.radixdlt.client.application.translate.ActionExecutionException;

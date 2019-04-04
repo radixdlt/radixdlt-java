@@ -1,10 +1,9 @@
 package com.radixdlt.client.examples;
 
-import com.radixdlt.client.application.RadixApplicationAPI;
+import com.radixdlt.client.RadixApplicationAPI;
 import com.radixdlt.client.application.identity.RadixIdentities;
 import com.radixdlt.client.application.translate.data.DecryptedMessage;
 import com.radixdlt.client.core.Bootstrap;
-import com.radixdlt.client.core.RadixUniverse;
 import com.radixdlt.client.application.identity.RadixIdentity;
 import com.radixdlt.client.dapps.messaging.RadixMessaging;
 import io.reactivex.Completable;

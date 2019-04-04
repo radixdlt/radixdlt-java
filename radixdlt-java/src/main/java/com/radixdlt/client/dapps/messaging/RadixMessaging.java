@@ -5,8 +5,8 @@ import java.util.Objects;
 
 import org.radix.utils.RadixConstants;
 
-import com.radixdlt.client.application.RadixApplicationAPI;
-import com.radixdlt.client.application.RadixApplicationAPI.Result;
+import com.radixdlt.client.RadixApplicationAPI;
+import com.radixdlt.client.RadixApplicationAPI.Result;
 import com.radixdlt.client.atommodel.accounts.RadixAddress;
 
 import io.reactivex.Observable;

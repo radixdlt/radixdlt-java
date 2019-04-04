@@ -1,4 +1,4 @@
-package com.radixdlt.client.application;
+package com.radixdlt.client;
 
 import com.radixdlt.client.application.translate.tokens.TokenUnitConversions;
 import com.radixdlt.client.core.BootstrapConfig;

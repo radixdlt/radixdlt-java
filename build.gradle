@@ -7,6 +7,7 @@ buildscript {
         classpath 'org.eclipse.jgit:org.eclipse.jgit:5.0.1.201806211838-r'
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7'
         classpath 'com.adarshr:gradle-test-logger-plugin:1.6.0'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
     }
 }
 
@@ -29,6 +30,7 @@ allprojects {
     }
 
     apply plugin: 'java'
+    apply plugin: 'com.github.johnrengelman.shadow'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
