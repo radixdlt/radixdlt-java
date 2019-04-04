@@ -83,6 +83,13 @@ public final class RadixCLI {
 				} else if (line.getOptionValue("u") != null) {
 					final String keyfile = line.getOptionValue("u");
 					identity = RadixIdentities.loadOrCreateFile(keyfile);
+				} else if (System.getenv("RADCLI_ENCRYPTED_KEYFILE") != null && System.getenv("RADCLI_PWD") != null) {
+					final String keyfile = System.getenv("RADCLI_ENCRYPTED_KEYFILE");
+					final String password = System.getenv("RADCLI_PWD");
+					identity = RadixIdentities.loadOrCreateEncryptedFile(keyfile, password);
+				} else if (System.getenv("RADCLI_UNENCRYPTED_KEYFILE") != null) {
+					final String keyfile = System.getenv("RADCLI_UNENCRYPTED_KEYFILE");
+					identity = RadixIdentities.loadOrCreateFile(keyfile);
 				} else {
 					System.err.println("key required");
 					System.exit(-1);
@@ -104,7 +111,10 @@ public final class RadixCLI {
 						api.pull();
 						api.getMessages()
 							.map(gson::toJson)
-							.subscribe(System.out::println);
+							.subscribe(a -> {
+								System.out.println(a);
+								System.out.flush();
+							});
 						TimeUnit.SECONDS.sleep(3);
 					}
 				} else if (arguments.get(0).equals("send")) {
@@ -129,11 +139,12 @@ public final class RadixCLI {
 						final String message = arguments.get(2);
 						final RadixAddress to = RadixAddress.from(arguments.get(4));
 
-						api.sendMessage(message.getBytes(RadixConstants.STANDARD_CHARSET), false, to)
-							.toCompletable()
-							.blockingAwait();
+						api.sendMessage(message.getBytes(RadixConstants.STANDARD_CHARSET), false, to).toCompletable().blockingAwait();
 						System.exit(0);
 					}
+				} else if (arguments.get(0).equals("myaddr")) {
+					System.out.println(api.getMyAddress());
+					System.exit(0);
 				} else {
 					System.out.println("My address: " + api.getMyAddress());
 					System.out.println("My public key: " + api.getMyPublicKey());
