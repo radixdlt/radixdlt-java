@@ -62,6 +62,9 @@ checkstyleTest {
 
 shadowJar {
     shadowJar.archiveName = 'radixdlt-java.jar'
+    dependencies {
+        exclude(dependency('org.bouncycastle:bcprov-jdk15on'))
+    }
 }
 
 jar {

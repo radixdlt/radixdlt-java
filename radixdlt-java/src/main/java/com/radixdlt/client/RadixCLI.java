@@ -89,7 +89,7 @@ public final class RadixCLI {
 					return;
 				}
 
-				RadixApplicationAPI api = RadixApplicationAPI.create(Bootstrap.LOCALHOST, identity);
+				RadixApplicationAPI api = RadixApplicationAPI.create(Bootstrap.SUNSTONE, identity);
 				Gson gson = new GsonBuilder()
 					.registerTypeAdapter(RadixAddress.class, new RadixAddressTypeAdapter())
 					.excludeFieldsWithoutExposeAnnotation()
