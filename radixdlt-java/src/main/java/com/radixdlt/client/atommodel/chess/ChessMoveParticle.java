@@ -13,7 +13,7 @@ public final class ChessMoveParticle extends Particle {
     @DsonOutput(DsonOutput.Output.ALL)
     private String move;
 
-    @JsonProperty("address")
+    @JsonProperty("gameAddress")
     @DsonOutput(DsonOutput.Output.ALL)
     private RadixAddress gameAddress;
 

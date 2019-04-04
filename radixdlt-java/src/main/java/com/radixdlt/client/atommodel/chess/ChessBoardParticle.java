@@ -22,7 +22,7 @@ public final class ChessBoardParticle extends Particle {
     @DsonOutput(DsonOutput.Output.ALL)
     private String boardState;
 
-    @JsonProperty("address")
+    @JsonProperty("gameAddress")
     @DsonOutput(DsonOutput.Output.ALL)
     private RadixAddress gameAddress;
 
@@ -59,7 +59,7 @@ public final class ChessBoardParticle extends Particle {
         this.gameState = State.from(state);
     }
 
-    private ChessBoardParticle(RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID) {
+    public ChessBoardParticle(RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID) {
         super();
         this.gameAddress = Objects.requireNonNull(gameAddress, "gameAddress is required");
         this.whiteAddress = Objects.requireNonNull(whiteAddress, "whiteAddress is required");
@@ -82,6 +82,11 @@ public final class ChessBoardParticle extends Particle {
 //        Move move = new Move(fromSquare, toSquare);
 //        board.doMove(move, true);
 //    }
+
+
+    public String getBoardState() {
+        return boardState;
+    }
 
     public enum State {
         ACTIVE("active"),
@@ -110,6 +115,4 @@ public final class ChessBoardParticle extends Particle {
             return statesByName.get(name);
         }
     }
-
-
 }
