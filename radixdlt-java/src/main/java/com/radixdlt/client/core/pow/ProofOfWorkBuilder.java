@@ -24,15 +24,16 @@ public class ProofOfWorkBuilder {
 		long nonce = 1;
 		buffer.putInt(magic);
 		buffer.put(seed);
-
 		String targetHex = Bytes.toHexString(target);
 
 		while (true) {
 			buffer.position(32 + 4);
+
 			buffer.putLong(nonce);
-			String hashHex = Bytes.toHexString(RadixHash.of(buffer.array()).toByteArray());
+			byte[] work = RadixHash.of(buffer.array()).toByteArray();
+			String hashHex = Bytes.toHexString(work);
 			if (hashHex.compareTo(targetHex) < 0) {
-				return new ProofOfWork(nonce, magic, seed, target);
+				return new ProofOfWork(nonce, magic, seed, target, work);
 			}
 			nonce++;
 		}

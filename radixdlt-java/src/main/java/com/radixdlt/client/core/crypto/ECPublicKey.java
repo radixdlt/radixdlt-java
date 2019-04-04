@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.radixdlt.client.core.atoms.RadixHash;
 import com.radixdlt.client.core.util.Base64Encoded;
+import org.radix.utils.primitives.Bytes;
 
 public class ECPublicKey implements Base64Encoded {
 	private final byte[] publicKey;
@@ -102,6 +103,10 @@ public class ECPublicKey implements Base64Encoded {
 	@Override
 	public String toString() {
 		return base64();
+	}
+
+	public String toHexString() {
+		return Bytes.toHexString(publicKey);
 	}
 
 	ECPoint getPublicPoint() {

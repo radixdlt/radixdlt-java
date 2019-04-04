@@ -11,12 +11,14 @@ public class ProofOfWork {
 	private final int magic;
 	private final byte[] seed;
 	private final byte[] target;
+	public final byte[] work;
 
-	public ProofOfWork(long nonce, int magic, byte[] seed, byte[] target) {
+	public ProofOfWork(long nonce, int magic, byte[] seed, byte[] target, byte[] work) {
 		this.nonce = nonce;
 		this.magic = magic;
 		this.seed = seed;
 		this.target = target;
+		this.work = work;
 	}
 
 	public String getTargetHex() {

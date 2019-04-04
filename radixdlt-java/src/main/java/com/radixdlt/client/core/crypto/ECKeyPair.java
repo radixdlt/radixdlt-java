@@ -174,6 +174,11 @@ public class ECKeyPair extends SerializableObject {
 		return sharedPrivateKey.decrypt(data);
 	}
 
+	public ECPublicKey diffieHellman(ECPublicKey other) {
+		ECPoint shared = other.getPublicPoint().multiply(new BigInteger(1, getPrivateKey())).normalize();
+		return new ECPublicKey(shared.getEncoded(true));
+	}
+
 	public byte[] decrypt(byte[] data) throws CryptoException {
 		if (privateKey == null) {
 			throw new IllegalStateException("This key does not contain a private key.");

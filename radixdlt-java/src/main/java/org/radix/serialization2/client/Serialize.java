@@ -3,6 +3,8 @@ package org.radix.serialization2.client;
 import java.util.Arrays;
 import java.util.Collection;
 
+import com.radixdlt.client.atommodel.chess.ChessBoardParticle;
+import com.radixdlt.client.atommodel.chess.ChessMoveParticle;
 import com.radixdlt.client.atommodel.tokens.BurnedTokensParticle;
 import com.radixdlt.client.atommodel.tokens.MintedTokensParticle;
 import com.radixdlt.client.atommodel.tokens.TransferredTokensParticle;
@@ -57,6 +59,8 @@ public final class Serialize {
 				TransferredTokensParticle.class,
 				BurnedTokensParticle.class,
 				UniqueParticle.class,
+			    ChessBoardParticle.class,
+			    ChessMoveParticle.class,
 
 				ECKeyPair.class,
 				ECSignature.class,
