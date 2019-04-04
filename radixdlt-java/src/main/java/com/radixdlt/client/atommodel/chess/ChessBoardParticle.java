@@ -2,10 +2,7 @@ package com.radixdlt.client.atommodel.chess;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.radixdlt.client.atommodel.accounts.RadixAddress;
-import com.radixdlt.client.core.address.RadixUniverseConfig;
 import com.radixdlt.client.core.atoms.particles.Particle;
-import com.radixdlt.client.core.crypto.ECKeyPair;
-import com.radixdlt.client.core.crypto.ECPublicKey;
 import org.radix.common.ID.EUID;
 import org.radix.serialization2.DsonOutput;
 import org.radix.serialization2.SerializerId2;
@@ -67,15 +64,29 @@ public final class ChessBoardParticle extends Particle {
         this.gameState = State.from(state);
     }
 
+<<<<<<< HEAD
     private ChessBoardParticle(RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID, String boardState) {
+=======
+    private ChessBoardParticle() {
+    }
+
+    public ChessBoardParticle(String boardState, RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID, State gameState) {
+>>>>>>> de2d9eb... Add initial state to board
         super();
+
+        this.boardState = Objects.requireNonNull(boardState);
         this.gameAddress = Objects.requireNonNull(gameAddress, "gameAddress is required");
         this.whiteAddress = Objects.requireNonNull(whiteAddress, "whiteAddress is required");
         this.blackAddress = Objects.requireNonNull(blackAddress, "blackAddress is required");
         this.nonce = System.nanoTime();
+<<<<<<< HEAD
         this.gameUID = Objects.requireNonNull(gameUID, "gameUID is required");
         this.gameState = State.ACTIVE;
         this.boardState = Objects.requireNonNull(boardState, "boardState is required");
+=======
+        this.gameUID = Objects.requireNonNull(gameUID);
+        this.gameState = Objects.requireNonNull(gameState);
+>>>>>>> de2d9eb... Add initial state to board
     }
 
     public static ChessBoardParticle newGame(RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID) {
@@ -92,6 +103,7 @@ public final class ChessBoardParticle extends Particle {
     }
 
     public enum State {
+        INITIAL("initial"),
         ACTIVE("active"),
         WHITE_WON("whiteWon"),
         BLACK_WON("blackWon"),

@@ -54,19 +54,22 @@ public class ChessTest {
 		EUID gameUID = new EUID(Hash.random().toByteArray());
 		test.submitAtom(
 			SpunParticle.up(new ChessBoardParticle(
+				"test",
 				gameAddress,
 				whiteAddress,
 				blackADdress,
-				gameUID)
-			),
+				gameUID,
+				ChessBoardParticle.State.INITIAL
+			)),
 			SpunParticle.up(new ChessMoveParticle(
 				gameAddress,
 				gameUID,
 				""
 			)))
-			.subscribe(update -> System.out.println(update.getState() + ":  " + update.getData()));
+			.subscribe(update -> System.out.println(update.getTimestamp() + " - " + update.getState()));
 
 		test.universe.getLedger().getAtomPuller().pull(gameAddress)
+			.filter(observation -> !observation.isHead())
 			.scan(new ArrayList<Atom>(), (prev, observation) -> {
 				if (observation.getType() == AtomObservation.Type.DELETE) {
 					prev.remove(observation.getAtom());

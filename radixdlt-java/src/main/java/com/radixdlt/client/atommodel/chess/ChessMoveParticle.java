@@ -21,7 +21,14 @@ public final class ChessMoveParticle extends Particle {
     @DsonOutput(DsonOutput.Output.ALL)
     private EUID gameUID;
 
+<<<<<<< HEAD
     private ChessMoveParticle(RadixAddress gameAddress, EUID gameUID, String move) {
+=======
+    private ChessMoveParticle() {
+    }
+
+    public ChessMoveParticle(RadixAddress gameAddress, EUID gameUID, String move) {
+>>>>>>> de2d9eb... Add initial state to board
         this.gameAddress = gameAddress;
         this.gameUID = gameUID;
         this.move = move;
