@@ -1,4 +1,4 @@
-package com.radixdlt.client.examples.chessModel;
+package com.radixdlt.client.examples.chess;
 
 import com.google.common.collect.ImmutableList;
 import com.radixdlt.client.application.RadixApplicationAPI;
@@ -31,17 +31,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ChessTest {
+public class MiniAtomSubmitter {
 	private RadixUniverse universe = RadixUniverse.create(Bootstrap.LOCALHOST_SINGLENODE);
 	private RadixIdentity identity;
 	private FeeMapper feeMapper = new PowFeeMapper(Atom::getHash, new ProofOfWorkBuilder());
 	private RadixJsonRpcClient jsonRpcClient;
 
+	public MiniAtomSubmitter(RadixIdentity identity) {
+		this.identity = Objects.requireNonNull(identity);
+	}
+
 	public static void main(String[] args) {
-		ChessTest test = new ChessTest();
+		MiniAtomSubmitter test = new MiniAtomSubmitter(RadixIdentities.createNew());
 		test.setUp();
 
 		RadixApplicationAPI gameApi = RadixApplicationAPI.create(Bootstrap.LOCALHOST_SINGLENODE, RadixIdentities.createNew());
@@ -50,7 +55,7 @@ public class ChessTest {
 
 		RadixAddress gameAddress = gameApi.getMyAddress();
 		RadixAddress whiteAddress = whiteApi.getMyAddress();
-		RadixAddress blackADdress = blackApi.getMyAddress();
+		RadixAddress blackADdress = whiteAddress;
 		EUID gameUID = new EUID(Hash.random().toByteArray());
 		ChessBoardParticle initialBoard = new ChessBoardParticle(
 			"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
@@ -111,7 +116,6 @@ public class ChessTest {
 	}
 
 	public void setUp() {
-		this.identity = RadixIdentities.createNew();
 		Request localhost = new Request.Builder().url("ws://localhost:8080/rpc").build();
 		WebSocketClient webSocketClient = new WebSocketClient(listener -> HttpClients.getSslAllTrustingClient().newWebSocket(localhost, listener));
 		webSocketClient.connect();
@@ -121,7 +125,7 @@ public class ChessTest {
 		this.jsonRpcClient = new RadixJsonRpcClient(webSocketClient);
 	}
 
-	private Observable<RadixJsonRpcClient.NodeAtomSubmissionUpdate> submitAtom(ParticleGroup... particleGroups) {
+	public Observable<RadixJsonRpcClient.NodeAtomSubmissionUpdate> submitAtom(ParticleGroup... particleGroups) {
 		List<ParticleGroup> particleGroupsList = ImmutableList.copyOf(particleGroups);
 
 		Map<String, String> atomMetaData = new HashMap<>();
@@ -133,5 +137,9 @@ public class ChessTest {
 		Atom signedAtom = this.identity.sign(unsignedAtom).blockingGet();
 		TestUtils.dumpJsonForHash(signedAtom);
 		return jsonRpcClient.submitAtom(signedAtom);
+	}
+
+	public Observable<RadixJsonRpcClient.NodeAtomSubmissionUpdate> submitAtom(List<SpunParticle<?>> spunParticles) {
+		return this.submitAtom(ParticleGroup.of(new ArrayList<>(spunParticles)));
 	}
 }
