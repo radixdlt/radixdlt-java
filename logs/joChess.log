@@ -1,0 +1,214 @@
+2019-04-04 13:56:28 GUI [ERROR] IOException, some error during getting config file!,, message: Users/greg/IdeaProjects/radixdlt-java/examples/lib/jChess-1.5config.txt (No such file or directory) stackTrace: [java.io.FileOutputStream.open0(Native Method), java.io.FileOutputStream.open(FileOutputStream.java:270), java.io.FileOutputStream.<init>(FileOutputStream.java:213), java.io.FileOutputStream.<init>(FileOutputStream.java:162), pl.art.lach.mateusz.javaopenchess.utils.GUI.saveConfigFileOutsideJar(GUI.java:181), pl.art.lach.mateusz.javaopenchess.utils.GUI.loadConfigFile(GUI.java:157), pl.art.lach.mateusz.javaopenchess.utils.GUI.getConfigFile(GUI.java:143), pl.art.lach.mateusz.javaopenchess.utils.GUI.loadImage(GUI.java:79), pl.art.lach.mateusz.javaopenchess.display.windows.JChessTabbedPane.<init>(JChessTabbedPane.java:55), pl.art.lach.mateusz.javaopenchess.JChessView.initComponents(JChessView.java:407), pl.art.lach.mateusz.javaopenchess.JChessView.<init>(JChessView.java:313), pl.art.lach.mateusz.javaopenchess.JChessApp.startup(JChessApp.java:51), org.jdesktop.application.Application$1.run(Application.java:171), java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311), java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758), java.awt.EventQueue.access$500(EventQueue.java:97), java.awt.EventQueue$3.run(EventQueue.java:709), java.awt.EventQueue$3.run(EventQueue.java:703), java.security.AccessController.doPrivileged(Native Method), java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74), java.awt.EventQueue.dispatchEvent(EventQueue.java:728), java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205), java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116), java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105), java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101), java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93), java.awt.EventDispatchThread.run(EventDispatchThread.java:82)]
+2019-04-04 13:56:28 GUI [ERROR] IOException, some error during getting config file!,, message: Users/greg/IdeaProjects/radixdlt-java/examples/lib/jChess-1.5config.txt (No such file or directory) stackTrace: [java.io.FileInputStream.open0(Native Method), java.io.FileInputStream.open(FileInputStream.java:195), java.io.FileInputStream.<init>(FileInputStream.java:138), pl.art.lach.mateusz.javaopenchess.utils.GUI.loadOuterConfigFile(GUI.java:167), pl.art.lach.mateusz.javaopenchess.utils.GUI.loadConfigFile(GUI.java:159), pl.art.lach.mateusz.javaopenchess.utils.GUI.getConfigFile(GUI.java:143), pl.art.lach.mateusz.javaopenchess.utils.GUI.loadImage(GUI.java:79), pl.art.lach.mateusz.javaopenchess.display.windows.JChessTabbedPane.<init>(JChessTabbedPane.java:55), pl.art.lach.mateusz.javaopenchess.JChessView.initComponents(JChessView.java:407), pl.art.lach.mateusz.javaopenchess.JChessView.<init>(JChessView.java:313), pl.art.lach.mateusz.javaopenchess.JChessApp.startup(JChessApp.java:51), org.jdesktop.application.Application$1.run(Application.java:171), java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311), java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758), java.awt.EventQueue.access$500(EventQueue.java:97), java.awt.EventQueue$3.run(EventQueue.java:709), java.awt.EventQueue$3.run(EventQueue.java:703), java.security.AccessController.doPrivileged(Native Method), java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74), java.awt.EventQueue.dispatchEvent(EventQueue.java:728), java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205), java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116), java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105), java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101), java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93), java.awt.EventDispatchThread.run(EventDispatchThread.java:82)]
+2019-04-04 13:56:28 GUI [DEBUG] THEME: null
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:36 Settings [DEBUG] Locale: en
+2019-04-04 13:56:42 Settings [DEBUG] Locale: en
+2019-04-04 13:56:48 Settings [DEBUG] Locale: en
+2019-04-04 13:56:48 Settings [DEBUG] Locale: en
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 GUI [DEBUG] THEME: null
+2019-04-04 13:56:48 Settings [DEBUG] Locale: en
+2019-04-04 13:56:48 Settings [DEBUG] Locale: en
+2019-04-04 13:56:48 Settings [DEBUG] Locale: en
+2019-04-04 13:56:48 Settings [DEBUG] Locale: en
+2019-04-04 13:56:48 Settings [DEBUG] Locale: en
+2019-04-04 13:56:48 GameClock [DEBUG] Present number of tabs: 1
+2019-04-04 13:56:48 DrawLocalSettings [DEBUG] this.time4Game.getActionCommand(): comboBoxChanged
+2019-04-04 13:56:48 DrawLocalSettings [DEBUG] ****************
+Starting new game: asd vs. CPU
+time 4 game: 0
+time limit set: false
+white on top?: false
+****************
+2019-04-04 13:56:49 Chessboard2D [DEBUG] square_x: 3.0 square_y: 2.0
+2019-04-04 13:56:50 Chessboard2D [DEBUG] square_x: 4.0 square_y: 2.0
+2019-04-04 13:56:51 Chessboard2D [DEBUG] square_x: 4.0 square_y: 7.0
+2019-04-04 13:56:51 Chessboard [DEBUG] active_x: 4 active_y: 7
+2019-04-04 13:56:52 Chessboard2D [DEBUG] square_x: 4.0 square_y: 5.0
+2019-04-04 13:56:52 Game [DEBUG] next move, active player: CPU, color: BLACK, type: COMPUTER
+2019-04-04 13:56:52 Game [DEBUG] next move, active player: asd, color: WHITE, type: LOCAL_USER
+2019-04-04 13:56:54 Chessboard2D [DEBUG] square_x: 5.0 square_y: 7.0
+2019-04-04 13:56:54 Chessboard [DEBUG] active_x: 5 active_y: 7
+2019-04-04 13:56:54 Chessboard2D [DEBUG] square_x: 5.0 square_y: 6.0
+2019-04-04 13:56:54 Game [DEBUG] next move, active player: CPU, color: BLACK, type: COMPUTER
+2019-04-04 13:56:54 Game [DEBUG] next move, active player: asd, color: WHITE, type: LOCAL_USER
+2019-04-04 14:01:39 GUI [ERROR] IOException, some error during getting config file!,, message: Users/greg/IdeaProjects/radixdlt-java/examples/lib/jChess-1.5config.txt (No such file or directory) stackTrace: [java.io.FileOutputStream.open0(Native Method), java.io.FileOutputStream.open(FileOutputStream.java:270), java.io.FileOutputStream.<init>(FileOutputStream.java:213), java.io.FileOutputStream.<init>(FileOutputStream.java:162), pl.art.lach.mateusz.javaopenchess.utils.GUI.saveConfigFileOutsideJar(GUI.java:181), pl.art.lach.mateusz.javaopenchess.utils.GUI.loadConfigFile(GUI.java:157), pl.art.lach.mateusz.javaopenchess.utils.GUI.getConfigFile(GUI.java:143), pl.art.lach.mateusz.javaopenchess.utils.GUI.loadImage(GUI.java:79), pl.art.lach.mateusz.javaopenchess.display.windows.JChessTabbedPane.<init>(JChessTabbedPane.java:55), pl.art.lach.mateusz.javaopenchess.JChessView.initComponents(JChessView.java:407), pl.art.lach.mateusz.javaopenchess.JChessView.<init>(JChessView.java:313), pl.art.lach.mateusz.javaopenchess.JChessApp.startup(JChessApp.java:51), org.jdesktop.application.Application$1.run(Application.java:171), java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311), java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758), java.awt.EventQueue.access$500(EventQueue.java:97), java.awt.EventQueue$3.run(EventQueue.java:709), java.awt.EventQueue$3.run(EventQueue.java:703), java.security.AccessController.doPrivileged(Native Method), java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74), java.awt.EventQueue.dispatchEvent(EventQueue.java:728), java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205), java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116), java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105), java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101), java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93), java.awt.EventDispatchThread.run(EventDispatchThread.java:82)]
+2019-04-04 14:01:39 GUI [ERROR] IOException, some error during getting config file!,, message: Users/greg/IdeaProjects/radixdlt-java/examples/lib/jChess-1.5config.txt (No such file or directory) stackTrace: [java.io.FileInputStream.open0(Native Method), java.io.FileInputStream.open(FileInputStream.java:195), java.io.FileInputStream.<init>(FileInputStream.java:138), pl.art.lach.mateusz.javaopenchess.utils.GUI.loadOuterConfigFile(GUI.java:167), pl.art.lach.mateusz.javaopenchess.utils.GUI.loadConfigFile(GUI.java:159), pl.art.lach.mateusz.javaopenchess.utils.GUI.getConfigFile(GUI.java:143), pl.art.lach.mateusz.javaopenchess.utils.GUI.loadImage(GUI.java:79), pl.art.lach.mateusz.javaopenchess.display.windows.JChessTabbedPane.<init>(JChessTabbedPane.java:55), pl.art.lach.mateusz.javaopenchess.JChessView.initComponents(JChessView.java:407), pl.art.lach.mateusz.javaopenchess.JChessView.<init>(JChessView.java:313), pl.art.lach.mateusz.javaopenchess.JChessApp.startup(JChessApp.java:51), org.jdesktop.application.Application$1.run(Application.java:171), java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311), java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758), java.awt.EventQueue.access$500(EventQueue.java:97), java.awt.EventQueue$3.run(EventQueue.java:709), java.awt.EventQueue$3.run(EventQueue.java:703), java.security.AccessController.doPrivileged(Native Method), java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74), java.awt.EventQueue.dispatchEvent(EventQueue.java:728), java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205), java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116), java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105), java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101), java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93), java.awt.EventDispatchThread.run(EventDispatchThread.java:82)]
+2019-04-04 14:01:39 GUI [DEBUG] THEME: null
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:43 Settings [DEBUG] Locale: en
+2019-04-04 14:01:49 Settings [DEBUG] Locale: en
+2019-04-04 14:01:49 Settings [DEBUG] Locale: en
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 GUI [DEBUG] THEME: null
+2019-04-04 14:01:49 Settings [DEBUG] Locale: en
+2019-04-04 14:01:49 Settings [DEBUG] Locale: en
+2019-04-04 14:01:49 Settings [DEBUG] Locale: en
+2019-04-04 14:01:49 Settings [DEBUG] Locale: en
+2019-04-04 14:01:49 Settings [DEBUG] Locale: en
+2019-04-04 14:01:49 GameClock [DEBUG] Present number of tabs: 1
+2019-04-04 14:01:49 DrawLocalSettings [DEBUG] this.time4Game.getActionCommand(): comboBoxChanged
+2019-04-04 14:01:49 DrawLocalSettings [DEBUG] ****************
+Starting new game: sdf vs. CPU
+time 4 game: 0
+time limit set: false
+white on top?: false
+****************
+2019-04-04 14:01:51 Chessboard2D [DEBUG] square_x: 4.0 square_y: 7.0
+2019-04-04 14:01:51 Chessboard [DEBUG] active_x: 4 active_y: 7
+2019-04-04 14:01:52 Chessboard2D [DEBUG] square_x: 4.0 square_y: 5.0
+2019-04-04 14:01:52 Game [DEBUG] next move, active player: CPU, color: BLACK, type: COMPUTER
+2019-04-04 14:01:52 Game [DEBUG] next move, active player: sdf, color: WHITE, type: LOCAL_USER
+2019-04-04 14:01:53 Chessboard2D [DEBUG] square_x: 5.0 square_y: 7.0
+2019-04-04 14:01:53 Chessboard [DEBUG] active_x: 5 active_y: 7
+2019-04-04 14:01:53 Chessboard2D [DEBUG] square_x: 5.0 square_y: 6.0
+2019-04-04 14:01:53 Game [DEBUG] next move, active player: CPU, color: BLACK, type: COMPUTER
+2019-04-04 14:01:53 Game [DEBUG] next move, active player: sdf, color: WHITE, type: LOCAL_USER
+2019-04-04 14:01:56 Chessboard2D [DEBUG] square_x: 4.0 square_y: 5.0
+2019-04-04 14:01:56 Chessboard [DEBUG] active_x: 4 active_y: 5
+2019-04-04 14:01:56 Chessboard2D [DEBUG] square_x: 3.0 square_y: 4.0
+2019-04-04 14:01:56 Game [DEBUG] next move, active player: CPU, color: BLACK, type: COMPUTER
+2019-04-04 14:01:56 Game [DEBUG] next move, active player: sdf, color: WHITE, type: LOCAL_USER
