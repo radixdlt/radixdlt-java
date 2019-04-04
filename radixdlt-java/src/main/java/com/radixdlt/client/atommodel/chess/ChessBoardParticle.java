@@ -64,14 +64,10 @@ public final class ChessBoardParticle extends Particle {
         this.gameState = State.from(state);
     }
 
-<<<<<<< HEAD
-    private ChessBoardParticle(RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID, String boardState) {
-=======
     private ChessBoardParticle() {
     }
 
     public ChessBoardParticle(String boardState, RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID, State gameState) {
->>>>>>> de2d9eb... Add initial state to board
         super();
 
         this.boardState = Objects.requireNonNull(boardState);
@@ -79,14 +75,8 @@ public final class ChessBoardParticle extends Particle {
         this.whiteAddress = Objects.requireNonNull(whiteAddress, "whiteAddress is required");
         this.blackAddress = Objects.requireNonNull(blackAddress, "blackAddress is required");
         this.nonce = System.nanoTime();
-<<<<<<< HEAD
         this.gameUID = Objects.requireNonNull(gameUID, "gameUID is required");
         this.gameState = State.ACTIVE;
-        this.boardState = Objects.requireNonNull(boardState, "boardState is required");
-=======
-        this.gameUID = Objects.requireNonNull(gameUID);
-        this.gameState = Objects.requireNonNull(gameState);
->>>>>>> de2d9eb... Add initial state to board
     }
 
     public static ChessBoardParticle newGame(RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID) {
@@ -94,7 +84,7 @@ public final class ChessBoardParticle extends Particle {
     }
 
     public static ChessBoardParticle fromPrevious(ChessBoardParticle prev, String move) {
-        return new ChessBoardParticle(prev.gameAddress, prev.whiteAddress, prev.blackAddress, prev.gameUID, move);
+        return new ChessBoardParticle(prev.boardState, prev.gameAddress, prev.whiteAddress, prev.blackAddress, prev.gameUID, move);
     }
 
 
