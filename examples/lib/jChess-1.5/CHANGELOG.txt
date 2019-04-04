@@ -1,0 +1,65 @@
+== VERSION 1.5 ==
+* migration to maven2 instead of ant
+* export to FEN notation (save game to FEN)
+* import from FEN notation (load game from FEN)
+* current FEN state visible under chessboard
+
+== VERSION 1.4.1 ==
+* donate button has been added 
+
+== VERSION 1.4 ==
+* fix in tab highlighting - now only inactive tab will be highlighted
+* new Computer level AI - 2 
+
+== VERSION 1.3.5 ==
+* highlighing of active tabs, in which some event was triggered (for example move)
+
+== VERSION 1.3.4 ==
+* bugfix in player names in case if versus computer 
+* bugfix in undo in case if versus computer
+
+== VERSION 1.3.3 ==
+* bugfix - (King safety)
+* bugfix - (Close last tab)
+
+== VERSION 1.3.2 ==
+* bugfix release (pawn promotion)
+
+== VERSION 1.3.1 ==
+* bugfix release
+
+== VERSION 1.3 ==
+* few bugfixes
+* big refactoring and new java-docs
+* basic rookie AI and possibility to play versus computer.
+
+== VERSION 1.2.1 ==
+* few translations fixes,
+* new gray theme.
+
+== VERSION 1.2 ==
+* totally new default theme,
+* old themes has been deleted,
+* chessboard themes are now provided in few size sets for better scaling quality,
+* a lot of refactoring stuff in few places.
+
+== VERSION 1.1 ==
+* small code refactoring in few places,
+* new functionality:
+** user can adjust chessboard display settings during game
+
+== VERSION 1.0.4 ==
+* small code refactoring in few places,
+* fix for graphical artifacts when new network tab is opened.
+
+== VERSION 1.0.3 ==
+* fix for graphical artifacts when new tab is opened.
+* a lot of refactoring stuff
+** behaviors of pieces has been moved to separate package and can be injected to each Piece
+* log4j has been introduced instead of System.out.println() or System.err.println().
+* deprecated undo mechanism has been removed permanently.
+* font in chat window during network game has been increased.
+
+== VERSION 1.0.2 ==
+* fix for first chessboard render issue
+* small refactoring in Chessboard class 

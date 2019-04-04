@@ -11,11 +11,15 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 repositories {
     mavenCentral()
+    flatDir {
+        dirs 'lib/jChess-1.5/'
+    }
 }
 
 dependencies {
     compile project(':radixdlt-java')
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation name: 'jChess-1.5'
 }
 
 shadowJar {
