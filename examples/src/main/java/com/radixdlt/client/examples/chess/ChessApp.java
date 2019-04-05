@@ -32,33 +32,37 @@ public class ChessApp extends JChessApp {
 	private static boolean joining;
     private static String myName;
     private static String otherName;
+    private static String gameName;
 
     public static void main(String[] args) {
-        if (args.length < 2) {
-            throw new IllegalArgumentException("Not enough arguments, need to specify address");
+        if (args.length < 3) {
+            throw new IllegalArgumentException("Not enough arguments, need to specify myname othername gamename [joining]");
         }
 
         launch(ChessApp.class, args);
         ChessApp.myName = args[0];
         ChessApp.otherName = args[1];
-        ChessApp.joining = args.length > 2;
+        ChessApp.gameName = args[2];
+        ChessApp.joining = args.length > 3;
     }
 
     @Override
     protected void startup() {
         RadixUniverse universe = RadixUniverse.create(Bootstrap.LOCALHOST);
-        RadixAddress otherAddress = universe.getAddressFrom(KeyUtils.fromSeed(myName).getPublicKey());
+        RadixAddress otherAddress = universe.getAddressFrom(KeyUtils.fromSeed(otherName).getPublicKey());
         RadixIdentity myIdentity = RadixIdentities.from(KeyUtils.fromSeed(myName));
         RadixAddress myAddress = universe.getAddressFrom(myIdentity.getPublicKey());
-        System.out.println("Me: " + myAddress.toString());
-        System.out.println("Other: " + otherAddress.toString());
         this.submitter = new MiniAtomSubmitter(myIdentity);
         this.submitter.setUp();
         this.fenExporter = DataTransferFactory.getExporterInstance(TransferFormat.FEN);
         this.fenImporter = DataTransferFactory.getImporterInstance(TransferFormat.FEN);
 
-        HumanPlayer selfPlayer = new HumanPlayer(myAddress.toString().substring(0, 5), Colors.WHITE);
-        NetworkPlayer otherPlayer = new NetworkPlayer(otherAddress.toString().substring(0, 5), Colors.BLACK);
+        System.out.println("Me: " + myAddress.toString());
+        System.out.println("Other: " + otherAddress.toString());
+        System.out.println("Game: " + gameName);
+
+        HumanPlayer selfPlayer = new HumanPlayer(myName, Colors.WHITE);
+        NetworkPlayer otherPlayer = new NetworkPlayer(otherName, Colors.BLACK);
 
         this.game = new Game() {
             @Override
@@ -74,15 +78,15 @@ public class ChessApp extends JChessApp {
                 }
             }
         };
-        Settings gameSettings = new Settings(selfPlayer, otherPlayer);
+        Settings gameSettings = joining ? new Settings(otherPlayer, selfPlayer) : new Settings(selfPlayer, otherPlayer);
         gameSettings.setGameType(GameTypes.LOCAL);
         this.game.setSettings(gameSettings);
         this.game.newGame();
 
         this.radixChess = joining ?
-	        ChessGame.join(myIdentity, otherAddress, spunParticles
+	        ChessGame.join(gameName, myIdentity, otherAddress, spunParticles
 		        -> this.submitter.submitAtom(spunParticles).subscribe(), universe) :
-	        ChessGame.create(myIdentity, otherAddress, spunParticles
+	        ChessGame.create(gameName, myIdentity, otherAddress, spunParticles
             -> this.submitter.submitAtom(spunParticles).subscribe(), universe);
         if (!joining) {
 	        this.radixChess.initialiseBoard(getBoardOnFEN());

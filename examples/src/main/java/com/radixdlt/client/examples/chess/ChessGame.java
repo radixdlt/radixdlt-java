@@ -6,6 +6,7 @@ import com.radixdlt.client.atommodel.chess.ChessBoardParticle;
 import com.radixdlt.client.atommodel.chess.ChessMoveParticle;
 import com.radixdlt.client.core.RadixUniverse;
 import com.radixdlt.client.core.atoms.Atom;
+import com.radixdlt.client.core.atoms.particles.Spin;
 import com.radixdlt.client.core.atoms.particles.SpunParticle;
 import com.radixdlt.client.core.crypto.ECPublicKey;
 import com.radixdlt.client.core.crypto.RadixECKeyPairs;
@@ -16,10 +17,12 @@ import org.radix.crypto.Hash;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -75,7 +78,7 @@ public class ChessGame {
 			gameUID,
 			ChessBoardParticle.State.INITIAL
 		);
-		this.submitter.accept(Arrays.asList(
+		this.submitter.accept(Collections.singletonList(
 			SpunParticle.up(onNext(initialBoard))
 		));
 	}
@@ -99,7 +102,9 @@ public class ChessGame {
 		if (changed) {
 			onNext(board);
 		}
-
+		System.out.println("Current: " + this.currentBoard.getBoardState());
+		System.out.println("New: " + board.getBoardState());
+		System.out.println("Is Different? " + changed);
 		return changed;
 	}
 
@@ -118,25 +123,25 @@ public class ChessGame {
 				.flatMap(Atom::spunParticles)
 				.filter(particle -> particle.getParticle() instanceof ChessBoardParticle)
 				.map(particle -> ((SpunParticle<ChessBoardParticle>) particle))
-				.collect(Collectors.groupingBy(SpunParticle<ChessBoardParticle>::getParticle)).entrySet().stream()
-				.filter(boards -> boards.getValue().size() == 1)
-				.map(Map.Entry::getKey)
+				.filter(particle -> particle.getParticle().getGameUID().equals(this.gameUID))
+				.collect(Collectors.groupingBy(cb -> cb.getParticle().getBoardState())).entrySet().stream()
+				.filter(boards -> boards.getValue().stream().noneMatch(sp -> sp.getSpin() == Spin.DOWN))
+				.map(boardsWithUp -> boardsWithUp.getValue().stream().filter(sp -> sp.getSpin() == Spin.UP).findFirst().get().getParticle())
 				.findFirst()
 			)
 			.filter(Optional::isPresent)
-			.map(Optional::get)
-			.doOnNext(this::onNext);
+			.map(Optional::get);
 	}
 
-	public static ChessGame join(RadixIdentity myIdentity, RadixAddress otherPlayer, Consumer<List<SpunParticle<?>>> submitter, RadixUniverse universe) {
-		return create(myIdentity, otherPlayer, submitter, universe, false);
+	public static ChessGame join(String gameName, RadixIdentity myIdentity, RadixAddress otherPlayer, Consumer<List<SpunParticle<?>>> submitter, RadixUniverse universe) {
+		return create(gameName, myIdentity, otherPlayer, submitter, universe, false);
 	}
 
-	public static ChessGame create(RadixIdentity myIdentity, RadixAddress otherPlayer, Consumer<List<SpunParticle<?>>> submitter, RadixUniverse universe) {
-		return create(myIdentity, otherPlayer, submitter, universe, true);
+	public static ChessGame create(String gameName, RadixIdentity myIdentity, RadixAddress otherPlayer, Consumer<List<SpunParticle<?>>> submitter, RadixUniverse universe) {
+		return create(gameName, myIdentity, otherPlayer, submitter, universe, true);
 	}
 
-	private static ChessGame create(RadixIdentity myIdentity, RadixAddress otherPlayer, Consumer<List<SpunParticle<?>>> submitter, RadixUniverse universe, boolean creator) {
+	private static ChessGame create(String gameName, RadixIdentity myIdentity, RadixAddress otherPlayer, Consumer<List<SpunParticle<?>>> submitter, RadixUniverse universe, boolean creator) {
 		RadixAddress myAddress = universe.getAddressFrom(myIdentity.getPublicKey());
 		String myAddressBase58 = myAddress.toString();
 		String otherAddressBase58 = otherPlayer.toString();
@@ -144,7 +149,11 @@ public class ChessGame {
 		ECPublicKey gameKey = RadixECKeyPairs.newInstance()
 			.generateKeyPairFromSeed(gameSeed.getBytes())
 			.getPublicKey();
-		EUID gameUID = new EUID(Hash.random().toByteArray());
+		Random rng = new Random();
+		rng.setSeed(gameName.hashCode());
+		byte[] gameUIDBytes = new byte[EUID.BYTES];
+		rng.nextBytes(gameUIDBytes);
+		EUID gameUID = new EUID(gameUIDBytes);
 		RadixAddress gameAddress = universe.getAddressFrom(gameKey);
 
 		return new ChessGame(universe, gameAddress, myAddress, otherPlayer, gameUID, submitter, creator);
