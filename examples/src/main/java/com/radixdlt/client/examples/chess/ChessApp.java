@@ -72,12 +72,11 @@ public class ChessApp extends JChessApp {
             public void nextMove() {
                 this.updateFenStateText();
 
-                ArrayList<String> moves = this.moves.getMoves();
-                if (!moves.isEmpty()) {
-                    String move = moves.get(moves.size() - 1);
-                    move = move.replace("-", "");
-                    radixChess.makeMove(move, getBoardOnFEN());
-                    System.out.println("MOVE " + move);
+                Move lastMove = game.getMoves().getLastMoveFromHistory();
+                if (lastMove != null) {
+	                String moveStr = lastMove.getFrom().getAlgebraicNotation() + lastMove.getTo().getAlgebraicNotation();
+	                radixChess.makeMove(moveStr, getBoardOnFEN());
+                    System.out.println("MOVE " + moveStr);
                 }
             }
         };
