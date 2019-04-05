@@ -14,6 +14,8 @@ import pl.art.lach.mateusz.javaopenchess.core.data_transfer.DataImporter;
 import pl.art.lach.mateusz.javaopenchess.core.data_transfer.DataTransferFactory;
 import pl.art.lach.mateusz.javaopenchess.core.data_transfer.TransferFormat;
 import pl.art.lach.mateusz.javaopenchess.core.exceptions.ReadGameError;
+import pl.art.lach.mateusz.javaopenchess.core.moves.Move;
+import pl.art.lach.mateusz.javaopenchess.core.players.Player;
 import pl.art.lach.mateusz.javaopenchess.core.players.implementation.HumanPlayer;
 import pl.art.lach.mateusz.javaopenchess.core.players.implementation.NetworkPlayer;
 import pl.art.lach.mateusz.javaopenchess.utils.GameTypes;
@@ -57,17 +59,18 @@ public class ChessApp extends JChessApp {
         this.fenExporter = DataTransferFactory.getExporterInstance(TransferFormat.FEN);
         this.fenImporter = DataTransferFactory.getImporterInstance(TransferFormat.FEN);
 
+        System.out.println(joining ? "JOINING" : "CREATING");
         System.out.println("Me: " + myAddress.toString());
         System.out.println("Other: " + otherAddress.toString());
         System.out.println("Game: " + gameName);
 
-        HumanPlayer selfPlayer = new HumanPlayer(myName, Colors.WHITE);
-        NetworkPlayer otherPlayer = new NetworkPlayer(otherName, Colors.BLACK);
+        HumanPlayer myPlayer = new HumanPlayer(myName, joining ? Colors.BLACK : Colors.WHITE);
+        NetworkPlayer otherPlayer = new NetworkPlayer(otherName, joining ? Colors.WHITE : Colors.BLACK);
 
         this.game = new Game() {
             @Override
             public void nextMove() {
-                super.nextMove();
+                this.updateFenStateText();
 
                 ArrayList<String> moves = this.moves.getMoves();
                 if (!moves.isEmpty()) {
@@ -78,10 +81,19 @@ public class ChessApp extends JChessApp {
                 }
             }
         };
-        Settings gameSettings = joining ? new Settings(otherPlayer, selfPlayer) : new Settings(selfPlayer, otherPlayer);
+        this.game.newGame();
+        Settings gameSettings = joining ? new Settings(otherPlayer, myPlayer) : new Settings(myPlayer, otherPlayer);
+        if (joining) {
+            gameSettings.setUpsideDown(false);
+            myPlayer.setGoDown(true);
+            otherPlayer.setGoDown(false);
+        }
         gameSettings.setGameType(GameTypes.LOCAL);
         this.game.setSettings(gameSettings);
-        this.game.newGame();
+        this.game.getGameClock().setVisible(false);
+        this.game.getGameClock().setEnabled(false);
+        this.game.getChat().setVisible(false);
+        this.game.getChat().setEnabled(false);
 
         this.radixChess = joining ?
 	        ChessGame.join(gameName, myIdentity, otherAddress, spunParticles
@@ -96,6 +108,15 @@ public class ChessApp extends JChessApp {
                 if (this.radixChess.onBoardChanged(board)) {
                     System.out.println("Ledger board forced change to: '" + board.getBoardState() + "'");
                     this.setBoardFromFENString(board.getBoardState());
+
+                    boolean amNext = board.isLastMoveWhite() && joining || !board.isLastMoveWhite() && !joining;
+                    Player activePlayer;
+                    if (amNext) {
+                        activePlayer = myPlayer;
+                    } else {
+                        activePlayer = otherPlayer;
+                    }
+                    game.setActivePlayer(activePlayer);
                 } else {
                     System.out.println("Ledger updated board but already have latest");
                 }

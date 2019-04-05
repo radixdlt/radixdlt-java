@@ -67,28 +67,25 @@ public final class ChessBoardParticle extends Particle {
     private ChessBoardParticle() {
     }
 
-    public ChessBoardParticle(String boardState, RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID, State gameState) {
+    public ChessBoardParticle(String boardState, RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID, State gameState, boolean lastMoveWhite) {
         super();
 
         this.boardState = Objects.requireNonNull(boardState);
         this.gameAddress = Objects.requireNonNull(gameAddress, "gameAddress is required");
         this.whiteAddress = Objects.requireNonNull(whiteAddress, "whiteAddress is required");
         this.blackAddress = Objects.requireNonNull(blackAddress, "blackAddress is required");
-        this.nonce = System.nanoTime();
+	    this.lastMoveWhite = lastMoveWhite;
+	    this.nonce = System.nanoTime();
         this.gameUID = Objects.requireNonNull(gameUID, "gameUID is required");
         this.gameState = gameState;
     }
 
-    public static ChessBoardParticle newGame(RadixAddress gameAddress, RadixAddress whiteAddress, RadixAddress blackAddress, EUID gameUID, String boardState) {
-        return new ChessBoardParticle(boardState, gameAddress, whiteAddress, blackAddress, gameUID, State.INITIAL);
-    }
-
-    public static ChessBoardParticle fromPrevious(ChessBoardParticle prev, String newBoardState) {
-        return new ChessBoardParticle(newBoardState, prev.gameAddress, prev.whiteAddress, prev.blackAddress, prev.gameUID, prev.gameState);
-    }
-
     public String getBoardState() {
         return boardState;
+    }
+
+    public boolean isLastMoveWhite() {
+        return lastMoveWhite;
     }
 
     public enum State {

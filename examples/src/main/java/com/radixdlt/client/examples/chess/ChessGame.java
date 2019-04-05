@@ -13,13 +13,11 @@ import com.radixdlt.client.core.crypto.RadixECKeyPairs;
 import com.radixdlt.client.core.ledger.AtomObservation;
 import io.reactivex.Observable;
 import org.radix.common.ID.EUID;
-import org.radix.crypto.Hash;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
@@ -59,8 +57,8 @@ public class ChessGame {
 				getWhiteAddress(),
 				getBlackAddress(),
 				gameUID,
-				ChessBoardParticle.State.ACTIVE // TODO This is not correct!
-			))),
+				ChessBoardParticle.State.ACTIVE, // TODO This is not correct!
+				!currentBoard.isLastMoveWhite()))),
 			SpunParticle.up(new ChessMoveParticle(
 				gameAddress,
 				gameUID,
@@ -76,8 +74,8 @@ public class ChessGame {
 			getWhiteAddress(),
 			getBlackAddress(),
 			gameUID,
-			ChessBoardParticle.State.INITIAL
-		);
+			ChessBoardParticle.State.INITIAL,
+			false);
 		this.submitter.accept(Collections.singletonList(
 			SpunParticle.up(onNext(initialBoard))
 		));

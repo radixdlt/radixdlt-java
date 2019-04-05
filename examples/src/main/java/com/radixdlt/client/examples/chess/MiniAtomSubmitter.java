@@ -63,16 +63,16 @@ public class MiniAtomSubmitter {
 			whiteAddress,
 			blackADdress,
 			gameUID,
-			ChessBoardParticle.State.INITIAL
-		);
+			ChessBoardParticle.State.INITIAL,
+			false);
 		ChessBoardParticle nextBoard = new ChessBoardParticle(
 			"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
 			gameAddress,
 			whiteAddress,
 			blackADdress,
 			gameUID,
-			ChessBoardParticle.State.ACTIVE
-		);
+			ChessBoardParticle.State.ACTIVE,
+			false);
 		test.submitAtom(
 				ParticleGroup.of(
 					SpunParticle.up(initialBoard)
