@@ -11,7 +11,9 @@ import com.radixdlt.client.core.atoms.particles.SpunParticle;
 import com.radixdlt.client.core.crypto.ECPublicKey;
 import com.radixdlt.client.core.crypto.RadixECKeyPairs;
 import com.radixdlt.client.core.ledger.AtomObservation;
+import com.radixdlt.client.core.network.jsonrpc.RadixJsonRpcClient;
 import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 import org.radix.common.ID.EUID;
 
 import java.util.ArrayList;
@@ -21,8 +23,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ChessGame {
 	private RadixAddress gameAddress;
@@ -31,10 +33,11 @@ public class ChessGame {
 	private EUID gameUID;
 	private ChessBoardParticle currentBoard;
 	private RadixUniverse universe;
-	private Consumer<List<SpunParticle<?>>> submitter;
+	private DirectAtomSubmitter submitter;
 	private final boolean creator;
+	private BehaviorSubject<Stream<SpunParticle<ChessBoardParticle>>> submissionObservations;
 
-	private ChessGame(RadixUniverse universe, RadixAddress gameAddress, RadixAddress myAddress, RadixAddress otherPlayer, EUID gameUID, Consumer<List<SpunParticle<?>>> submitter, boolean creator) {
+	private ChessGame(RadixUniverse universe, RadixAddress gameAddress, RadixAddress myAddress, RadixAddress otherPlayer, EUID gameUID, DirectAtomSubmitter submitter, boolean creator) {
 		this.universe = universe;
 		this.gameAddress = Objects.requireNonNull(gameAddress, "gameAddress is required");
 		this.myAddress = Objects.requireNonNull(myAddress, "myAddress is required");
@@ -42,6 +45,7 @@ public class ChessGame {
 		this.gameUID = Objects.requireNonNull(gameUID);
 		this.submitter = submitter;
 		this.creator = creator;
+		this.submissionObservations = BehaviorSubject.create();
 	}
 
 	public void makeMove(String move, String newBoard) {
@@ -49,7 +53,7 @@ public class ChessGame {
 			throw new IllegalStateException("Cannot make move before board is set");
 		}
 
-		this.submitter.accept(Arrays.asList(
+		submitInternal(Arrays.asList(
 			SpunParticle.down(currentBoard),
 			SpunParticle.up(onNext(new ChessBoardParticle(
 				newBoard,
@@ -76,9 +80,21 @@ public class ChessGame {
 			gameUID,
 			ChessBoardParticle.State.INITIAL,
 			false);
-		this.submitter.accept(Collections.singletonList(
+		submitInternal(Collections.singletonList(
 			SpunParticle.up(onNext(initialBoard))
 		));
+	}
+
+	private void submitInternal(List<SpunParticle<?>> spunParticles) {
+		this.submitter.submitAtom(spunParticles)
+			.filter(atom -> atom.getState().isComplete())
+			.filter(atom -> atom.getState() != RadixJsonRpcClient.NodeAtomSubmissionState.STORED)
+			.subscribe(atom -> submissionObservations.onNext(
+				spunParticles.stream()
+					.filter(sp -> sp.getParticle() instanceof ChessBoardParticle)
+					.map(sp -> ((SpunParticle<ChessBoardParticle>) sp))
+					.map(sp -> SpunParticle.down(sp.getParticle()))
+			));
 	}
 
 	private RadixAddress getWhiteAddress() {
@@ -118,9 +134,9 @@ public class ChessGame {
 				return prev;
 			})
 			.map(atoms -> atoms.stream()
-				.flatMap(Atom::spunParticles)
-				.filter(particle -> particle.getParticle() instanceof ChessBoardParticle)
-				.map(particle -> ((SpunParticle<ChessBoardParticle>) particle))
+				.flatMap(this::extractChessBoardParticles))
+			.concatWith(submissionObservations)
+			.map(particles -> particles
 				.filter(particle -> particle.getParticle().getGameUID().equals(this.gameUID))
 				.collect(Collectors.groupingBy(cb -> cb.getParticle().getBoardState())).entrySet().stream()
 				.filter(boards -> boards.getValue().stream().noneMatch(sp -> sp.getSpin() == Spin.DOWN))
@@ -131,15 +147,21 @@ public class ChessGame {
 			.map(Optional::get);
 	}
 
-	public static ChessGame join(String gameName, RadixIdentity myIdentity, RadixAddress otherPlayer, Consumer<List<SpunParticle<?>>> submitter, RadixUniverse universe) {
+	private Stream<SpunParticle<ChessBoardParticle>> extractChessBoardParticles(Atom atom) {
+		return atom.spunParticles()
+			.filter(particle -> particle.getParticle() instanceof ChessBoardParticle)
+			.map(particle -> ((SpunParticle<ChessBoardParticle>) particle));
+	}
+
+	public static ChessGame join(String gameName, RadixIdentity myIdentity, RadixAddress otherPlayer, DirectAtomSubmitter submitter, RadixUniverse universe) {
 		return create(gameName, myIdentity, otherPlayer, submitter, universe, false);
 	}
 
-	public static ChessGame create(String gameName, RadixIdentity myIdentity, RadixAddress otherPlayer, Consumer<List<SpunParticle<?>>> submitter, RadixUniverse universe) {
+	public static ChessGame create(String gameName, RadixIdentity myIdentity, RadixAddress otherPlayer, DirectAtomSubmitter submitter, RadixUniverse universe) {
 		return create(gameName, myIdentity, otherPlayer, submitter, universe, true);
 	}
 
-	private static ChessGame create(String gameName, RadixIdentity myIdentity, RadixAddress otherPlayer, Consumer<List<SpunParticle<?>>> submitter, RadixUniverse universe, boolean creator) {
+	private static ChessGame create(String gameName, RadixIdentity myIdentity, RadixAddress otherPlayer, DirectAtomSubmitter submitter, RadixUniverse universe, boolean creator) {
 		RadixAddress myAddress = universe.getAddressFrom(myIdentity.getPublicKey());
 		String myAddressBase58 = myAddress.toString();
 		String otherAddressBase58 = otherPlayer.toString();

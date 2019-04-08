@@ -21,15 +21,13 @@ import pl.art.lach.mateusz.javaopenchess.core.players.implementation.NetworkPlay
 import pl.art.lach.mateusz.javaopenchess.utils.GameTypes;
 import pl.art.lach.mateusz.javaopenchess.utils.Settings;
 
-import java.util.ArrayList;
-
 public class ChessApp extends JChessApp {
 	private JChessView javaChessView;
     private Game game;
     private DataExporter fenExporter;
     private DataImporter fenImporter;
     private ChessGame radixChess;
-    private MiniAtomSubmitter submitter;
+    private DirectAtomSubmitter submitter;
 
 	private static boolean joining;
     private static String myName;
@@ -54,7 +52,7 @@ public class ChessApp extends JChessApp {
         RadixAddress otherAddress = universe.getAddressFrom(KeyUtils.fromSeed(otherName).getPublicKey());
         RadixIdentity myIdentity = RadixIdentities.from(KeyUtils.fromSeed(myName));
         RadixAddress myAddress = universe.getAddressFrom(myIdentity.getPublicKey());
-        this.submitter = new MiniAtomSubmitter(myIdentity);
+        this.submitter = new DirectAtomSubmitter(myIdentity);
         this.submitter.setUp();
         this.fenExporter = DataTransferFactory.getExporterInstance(TransferFormat.FEN);
         this.fenImporter = DataTransferFactory.getImporterInstance(TransferFormat.FEN);
@@ -95,10 +93,8 @@ public class ChessApp extends JChessApp {
         this.game.getChat().setEnabled(false);
 
         this.radixChess = joining ?
-	        ChessGame.join(gameName, myIdentity, otherAddress, spunParticles
-		        -> this.submitter.submitAtom(spunParticles).subscribe(), universe) :
-	        ChessGame.create(gameName, myIdentity, otherAddress, spunParticles
-            -> this.submitter.submitAtom(spunParticles).subscribe(), universe);
+	        ChessGame.join(gameName, myIdentity, otherAddress, submitter, universe) :
+	        ChessGame.create(gameName, myIdentity, otherAddress, submitter, universe);
         if (!joining) {
 	        this.radixChess.initialiseBoard(getBoardOnFEN());
         }

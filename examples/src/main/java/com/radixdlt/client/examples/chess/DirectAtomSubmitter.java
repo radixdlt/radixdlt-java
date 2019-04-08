@@ -35,18 +35,18 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class MiniAtomSubmitter {
+public class DirectAtomSubmitter {
 	private RadixUniverse universe = RadixUniverse.create(Bootstrap.LOCALHOST_SINGLENODE);
 	private RadixIdentity identity;
 	private FeeMapper feeMapper = new PowFeeMapper(Atom::getHash, new ProofOfWorkBuilder());
 	private RadixJsonRpcClient jsonRpcClient;
 
-	public MiniAtomSubmitter(RadixIdentity identity) {
+	public DirectAtomSubmitter(RadixIdentity identity) {
 		this.identity = Objects.requireNonNull(identity);
 	}
 
 	public static void main(String[] args) {
-		MiniAtomSubmitter test = new MiniAtomSubmitter(RadixIdentities.createNew());
+		DirectAtomSubmitter test = new DirectAtomSubmitter(RadixIdentities.createNew());
 		test.setUp();
 
 		RadixApplicationAPI gameApi = RadixApplicationAPI.create(Bootstrap.LOCALHOST_SINGLENODE, RadixIdentities.createNew());
