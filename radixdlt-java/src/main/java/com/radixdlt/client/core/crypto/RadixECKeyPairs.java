@@ -38,7 +38,7 @@ public class RadixECKeyPairs {
         }
 
 
-        byte[] privateKey = Hash.hash("SHA-256", seed);
+        byte[] privateKey = Hash.sha256(seed);
 
         if (privateKey.length != 32) {
             byte[] copy = new byte[32];

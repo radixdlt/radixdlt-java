@@ -1,6 +1,6 @@
 package com.radixdlt.client.core.crypto;
 
-import com.radixdlt.client.core.util.Hash;
+import org.radix.crypto.Hash;
 import org.junit.Test;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -76,7 +76,7 @@ public class DeterministicSignatureTest {
         for (Map<String, String> vector : vectors) {
             ECKeyPair keyPair = new ECKeyPair(Bytes.fromHexString(vector.get("key")));
             byte[] messageUnhashed = vector.get("message").getBytes(StandardCharsets.UTF_8);
-            byte[] message = Hash.sha256(messageUnhashed);
+            byte[] message = Hash.sha256Raw(messageUnhashed);
             ECSignature signature = keyPair.sign(message, true, true);
             assertEquals(vector.get("expectedSignatureR"), signature.getR().toString(16));
             assertEquals(vector.get("expectedSignatureS"), signature.getS().toString(16));

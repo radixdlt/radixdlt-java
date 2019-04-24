@@ -9,7 +9,7 @@ import org.radix.common.ID.EUID;
 
 import com.radixdlt.client.core.crypto.ECPublicKey;
 import com.radixdlt.client.core.crypto.ECSignature;
-import com.radixdlt.client.core.util.Hash;
+import org.radix.crypto.Hash;
 import org.radix.utils.primitives.Bytes;
 
 public final class RadixHash {
@@ -40,15 +40,15 @@ public final class RadixHash {
 	}
 
 	public static RadixHash of(byte[] data) {
-		return new RadixHash(Hash.sha256(Hash.sha256(data)));
+		return new RadixHash(Hash.sha256(data));
 	}
 
 	public static RadixHash of(byte[] data, int offset, int length) {
-		return new RadixHash(Hash.sha256(Hash.sha256(data, offset, length)));
+		return new RadixHash(Hash.sha256(data, offset, length));
 	}
 
 	public static RadixHash sha512of(byte[] data) {
-		return new RadixHash(Hash.sha512(Hash.sha512(data)));
+		return new RadixHash(Hash.sha512(data));
 	}
 
 	@Override

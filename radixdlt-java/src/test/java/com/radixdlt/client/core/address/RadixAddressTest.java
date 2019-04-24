@@ -18,8 +18,8 @@ public class RadixAddressTest {
 	public void createAddressFromPublicKey() {
 		ECPublicKey publicKey = new ECPublicKey(Base64.decode("A455PdOZNwyRWaSWFXyYYkbj7Wv9jtgCCqUYhuOHiPLC"));
 		RadixAddress address = new RadixAddress(RadixUniverseConfigs.getBetanet(), publicKey);
-		assertEquals("JHB89drvftPj6zVCNjnaijURk8D8AMFw4mVja19aoBGmRXWchnJ", address.toString());
-		assertEquals(address, RadixAddress.from("JHB89drvftPj6zVCNjnaijURk8D8AMFw4mVja19aoBGmRXWchnJ"));
+		assertEquals("JHB89drvftPj6zVCNjnaijURk8D8AMFw4mVja19aoBGmRYwsmGW", address.toString());
+		assertEquals(address, RadixAddress.from("JHB89drvftPj6zVCNjnaijURk8D8AMFw4mVja19aoBGmRYwsmGW"));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -30,8 +30,8 @@ public class RadixAddressTest {
 
 	@Test
 	public void createAddressAndCheckUID() {
-		RadixAddress address = new RadixAddress("JHB89drvftPj6zVCNjnaijURk8D8AMFw4mVja19aoBGmRXWchnJ");
-		assertEquals(new EUID("8cfef50ea6a767813631490f9a94f73f"), address.getUID());
+		RadixAddress address = new RadixAddress("JHB89drvftPj6zVCNjnaijURk8D8AMFw4mVja19aoBGmRYwsmGW");
+		assertEquals(new EUID("8022a3d56d67d35da4150b036cedfa6c"), address.getUID());
 	}
 
 	@Test
@@ -42,7 +42,7 @@ public class RadixAddressTest {
 	@Test
 	public void testAddresses() {
 		List<String> addresses = Arrays.asList(
-			"JHB89drvftPj6zVCNjnaijURk8D8AMFw4mVja19aoBGmRXWchnJ"
+			"JHB89drvftPj6zVCNjnaijURk8D8AMFw4mVja19aoBGmRYwsmGW"
 		);
 
 		addresses.forEach(address -> {

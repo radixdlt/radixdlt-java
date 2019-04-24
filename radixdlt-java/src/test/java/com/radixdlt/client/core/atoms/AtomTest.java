@@ -8,7 +8,7 @@ import java.util.Collections;
 
 import com.radixdlt.client.core.crypto.ECKeyPair;
 import com.radixdlt.client.core.crypto.ECSignature;
-import com.radixdlt.client.core.util.Hash;
+import org.radix.crypto.Hash;
 import org.junit.Test;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -24,14 +24,14 @@ public class AtomTest {
 		/// The origin of these hashes are this library it self, commit: acbc5307cf5c9f7e1c30300f7438ef5dbc3bb629
 		/// These hashes can be used as a reference for other Radix libraries, e.g. Swift.
 
-		assertEquals("e50964da69e6672a98d5e3c1b1d73fb3", atom.getHid().toHexString());
+		assertEquals("b4d9d427922e6044473931cdf26ef789", atom.getHid().toHexString());
 		assertEquals("Two empty atoms should equal", atom, new Atom(Collections.emptyList(), 0L));
 
 		byte[] seed = Hash.sha256("Radix".getBytes(StandardCharsets.UTF_8));
 		ECKeyPair ecKeyPair = new ECKeyPair(seed);
 		ECSignature signature = ecKeyPair.sign(atom.getHash().toByteArray(), true, true);
-		assertEquals("d58c086f3d79a4159241df186306ff21627f09d718820a886110ee927dfc6682", signature.getR().toString(16));
-		assertEquals("63a573d3255f529310c6db9a985b01cba72fdcf4236b1e12f64ecac2e2ddce14", signature.getS().toString(16));
+		assertEquals("f678a20399337291a498038e963b71c169674f6646a50cbe7c22e7119a042611", signature.getR().toString(16));
+		assertEquals("1ea36dc50397f56bb35fab25498aa87e57b2b3493a8713cfd1f999d1b078d9ff", signature.getS().toString(16));
 	}
 
 	@Test
