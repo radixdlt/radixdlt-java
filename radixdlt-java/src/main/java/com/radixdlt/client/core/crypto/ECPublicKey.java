@@ -65,7 +65,7 @@ public class ECPublicKey implements Base64Encoded {
 	}
 
 	public EUID getUID() {
-		return RadixHash.of(publicKey).toEUID();
+		return new EUID(publicKey, publicKey.length - EUID.BYTES);
 	}
 
 	public ECKeyPair toECKeyPair() {
