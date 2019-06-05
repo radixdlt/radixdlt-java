@@ -2,8 +2,10 @@ package com.radixdlt.client.atommodel.accounts;
 
 import com.radixdlt.client.core.address.RadixUniverseConfig;
 import java.util.Objects;
+import java.util.zip.CRC32;
 
 import org.radix.common.ID.EUID;
+import org.radix.utils.primitives.Ints;
 
 import com.radixdlt.client.core.atoms.RadixHash;
 import com.radixdlt.client.core.crypto.ECKeyPair;
@@ -51,8 +53,10 @@ public class RadixAddress {
 		// Public Key
 		publicKey.copyPublicKey(addressBytes, 1);
 		// Checksum
-		byte[] check = RadixHash.of(addressBytes, 0, publicKey.length() + 1).toByteArray();
-		System.arraycopy(check, 0, addressBytes, publicKey.length() + 1, 4);
+		CRC32 crc = new CRC32();
+		crc.update(addressBytes, 0, publicKey.length() + 1);
+		byte[] check = Ints.toByteArray((int)crc.getValue());
+		System.arraycopy (check, 0, addressBytes, publicKey.length() + 1, 4);
 
 		this.addressBase58 = Base58.toBase58(addressBytes);
 		this.publicKey = publicKey;
@@ -60,11 +64,13 @@ public class RadixAddress {
 
 	private RadixAddress(byte[] raw) {
 		String addressBase58 = Base58.toBase58(raw);
-		RadixHash check = RadixHash.of(raw, 0, raw.length - 4);
+		
+		CRC32 crc = new CRC32();
+		crc.update(raw, 0, raw.length - 4);
+		byte[] check = Ints.toByteArray((int)crc.getValue());
 		for (int i = 0; i < 4; ++i) {
-			if (check.get(i) != raw[raw.length - 4 + i]) {
+			if (check[i] != raw[raw.length - 4 + i])
 				throw new IllegalArgumentException("Address " + addressBase58 + " checksum mismatch");
-			}
 		}
 
 		byte[] publicKey = new byte[raw.length - 5];
