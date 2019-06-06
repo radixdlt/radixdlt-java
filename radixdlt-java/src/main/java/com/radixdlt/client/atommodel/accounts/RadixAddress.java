@@ -7,7 +7,6 @@ import java.util.zip.CRC32;
 import org.radix.common.ID.EUID;
 import org.radix.utils.primitives.Ints;
 
-import com.radixdlt.client.core.atoms.RadixHash;
 import com.radixdlt.client.core.crypto.ECKeyPair;
 import com.radixdlt.client.core.crypto.ECPublicKey;
 import com.radixdlt.client.core.util.Base58;
@@ -23,11 +22,13 @@ public class RadixAddress {
 
 	public RadixAddress(String addressBase58) {
 		byte[] raw = Base58.fromBase58(addressBase58);
-		RadixHash check = RadixHash.of(raw, 0, raw.length - 4);
+		
+		CRC32 crc = new CRC32();
+		crc.update(raw, 0, raw.length - 4);
+		byte[] check = Ints.toByteArray((int)crc.getValue());
 		for (int i = 0; i < 4; ++i) {
-			if (check.get(i) != raw[raw.length - 4 + i]) {
+			if (check[i] != raw[raw.length - 4 + i])
 				throw new IllegalArgumentException("Address " + addressBase58 + " checksum mismatch");
-			}
 		}
 
 		byte[] publicKey = new byte[raw.length - 5];
