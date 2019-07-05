@@ -54,8 +54,6 @@ public class Receipt {
     }
 
     public byte[] getSerializedJsonBytes() {
-//        return Receipt.serialize(this);
-
         Gson gson = new Gson();
         String jsonString = gson.toJson(this);
         return jsonString.getBytes(RadixConstants.STANDARD_CHARSET);
@@ -67,24 +65,24 @@ public class Receipt {
         return gson.fromJson(jsonString, Receipt.class);
     }
 
-//    public static Receipt deserializeByteArray(byte[] bytes) {
-//
-//    }
-//
-//    private static byte[] serialize(Receipt receipt) {
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        try {
-//            ObjectOutputStream oos = new ObjectOutputStream(baos);
-//            oos.writeObject(receipt);
-//            oos.flush();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return baos.toByteArray();
-//    }
-
     public RadixAddress merchantRadixAddress() {
         return merchant.getAddress();
+    }
+
+    public Merchant getMerchant() {
+        return merchant;
+    }
+
+    public List<ReceiptItem> getItems() {
+        return items;
+    }
+
+    public long getDate() {
+        return date;
+    }
+
+    public Payment getPayment() {
+        return payment;
     }
 
     @Override
