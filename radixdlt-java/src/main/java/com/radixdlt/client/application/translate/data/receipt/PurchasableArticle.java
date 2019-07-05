@@ -1,6 +1,7 @@
 package com.radixdlt.client.application.translate.data.receipt;
 
-import com.sun.istack.internal.NotNull;
+
+import io.reactivex.annotations.NonNull;
 import io.reactivex.annotations.Nullable;
 import org.checkerframework.checker.nullness.Opt;
 
@@ -15,7 +16,7 @@ public class PurchasableArticle {
     private String articleId;
     private Optional<String> imageUrl;
 
-    private PurchasableArticle(@NotNull String name, double price, @NotNull String articleId, @Nullable String imageUrl) {
+    private PurchasableArticle(@NonNull String name, double price, @NonNull String articleId, @Nullable String imageUrl) {
         this.name = name;
         this.price = price;
         this.articleId = articleId;
@@ -23,7 +24,7 @@ public class PurchasableArticle {
     }
 
     public static PurchasableArticle of(
-            @NotNull String name,
+            @NonNull String name,
             double price,
             @Nullable String imageUrl,
             @Nullable String articleId

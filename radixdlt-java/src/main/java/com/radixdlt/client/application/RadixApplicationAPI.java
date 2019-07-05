@@ -841,8 +841,12 @@ public class RadixApplicationAPI {
 		return sendTokens(token, from, to, amount, null);
 	}
 
-	public Result makePurchase(Purchase purchase) {
-		return sendTokens(getNativeTokenRef(), this.getAddress(), purchase.getReceipt());
+	public Result makePurchaseWithRads(Purchase purchase, RadixAddress customerAddress) {
+		return makePurchase(purchase, getNativeTokenRef(), customerAddress);
+	}
+	
+	public Result makePurchase(Purchase purchase, RRI token, RadixAddress customerAddress) {
+		return sendTokens(token, customerAddress, purchase.getReceipt());
 	}
 
 	public Result sendTokens(RRI token, RadixAddress from, Receipt receipt) {
