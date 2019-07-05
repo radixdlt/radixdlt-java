@@ -1,25 +1,10 @@
 package com.radixdlt.client.application.translate.data.receipt;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
-import com.radixdlt.client.application.translate.tokens.TokenTransfer;
-import com.radixdlt.client.application.translate.tokens.TokenUnitConversions;
 import com.radixdlt.client.atommodel.accounts.RadixAddress;
-import org.radix.serialization2.DsonOutput;
-import org.radix.serialization2.SerializerId2;
-import org.radix.serialization2.client.SerializableObject;
 import org.radix.utils.RadixConstants;
-import sun.security.krb5.internal.PAData;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -94,9 +79,12 @@ public class Receipt {
             return false;
         }
         Receipt receipt = (Receipt) o;
-        return date == receipt.date &&
-                merchant.equals(receipt.merchant) &&
-                items.equals(receipt.items) &&
+        return date == receipt.date
+                &&
+                merchant.equals(receipt.merchant)
+                &&
+                items.equals(receipt.items)
+                &&
                 payment.equals(receipt.payment);
     }
 

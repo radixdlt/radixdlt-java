@@ -3,16 +3,10 @@ package com.radixdlt.client.application.translate.tokens;
 import com.radixdlt.client.application.translate.data.receipt.Receipt;
 import com.radixdlt.client.atommodel.accounts.RadixAddress;
 import com.radixdlt.client.core.atoms.particles.RRI;
+import org.radix.utils.RadixConstants;
+
 import java.math.BigDecimal;
 import java.util.Optional;
-
-import org.checkerframework.checker.nullness.Opt;
-import org.json.JSONObject;
-import org.radix.serialization2.client.Serialize;
-import org.radix.utils.RadixConstants;
-import org.radix.utils.primitives.Bytes;
-
-import javax.swing.text.html.Option;
 
 public class TokenTransfer {
 	private final RadixAddress from;
@@ -67,8 +61,7 @@ public class TokenTransfer {
 	}
 
 	public Optional<Receipt> getReceiptFromAttachment() {
-		if (attachment != null)
-		{
+		if (attachment != null) {
 			Optional<Receipt> maybeReceipt = Optional.ofNullable(Receipt.fromSerializedJsonBytes(attachment));
 			return maybeReceipt;
 		} else {

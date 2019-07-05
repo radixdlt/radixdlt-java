@@ -1,8 +1,6 @@
 package com.radixdlt.client.application.translate.data.receipt;
 
 import com.radixdlt.client.atommodel.accounts.RadixAddress;
-import org.radix.serialization2.SerializerId2;
-import org.radix.serialization2.client.SerializableObject;
 
 import java.util.Objects;
 
@@ -38,8 +36,10 @@ public class Merchant {
             return false;
         }
         Merchant merchant = (Merchant) o;
-        return name.equals(merchant.name) &&
-                radixAddress.equals(merchant.radixAddress) &&
+        return name.equals(merchant.name)
+                &&
+                radixAddress.equals(merchant.radixAddress)
+                &&
                 category == merchant.category;
     }
 

@@ -1,7 +1,5 @@
 package com.radixdlt.client.application.translate.data.receipt;
 
-import org.radix.serialization2.client.SerializableObject;
-
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -47,7 +45,8 @@ public class ReceiptItem {
             return false;
         }
         ReceiptItem that = (ReceiptItem) o;
-        return Double.compare(that.quantity, quantity) == 0 &&
+        return Double.compare(that.quantity, quantity) == 0
+                &&
                 article.equals(that.article);
     }
 

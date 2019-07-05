@@ -3,9 +3,7 @@ package com.radixdlt.client.application.translate.data.receipt;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.annotations.Nullable;
-import org.checkerframework.checker.nullness.Opt;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -58,9 +56,12 @@ public class PurchasableArticle {
             return false;
         }
         PurchasableArticle that = (PurchasableArticle) o;
-        return Double.compare(that.price, price) == 0 &&
-                name.equals(that.name) &&
-                articleId.equals(that.articleId) &&
+        return Double.compare(that.price, price) == 0
+                &&
+                name.equals(that.name)
+                &&
+                articleId.equals(that.articleId)
+                &&
                 imageUrl.equals(that.imageUrl);
     }
 

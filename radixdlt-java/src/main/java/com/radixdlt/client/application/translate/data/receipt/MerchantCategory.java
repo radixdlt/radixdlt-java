@@ -1,7 +1,5 @@
 package com.radixdlt.client.application.translate.data.receipt;
 
-import org.radix.serialization2.client.SerializableObject;
-
 public enum MerchantCategory {
     RESTAURANT("Restaurant", 1000),
     FLOWERS("Flowers", 2000);
