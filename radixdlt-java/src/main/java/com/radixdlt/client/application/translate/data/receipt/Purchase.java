@@ -2,6 +2,7 @@ package com.radixdlt.client.application.translate.data.receipt;
 
 import org.checkerframework.checker.nullness.Opt;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +45,10 @@ public class Purchase {
         public Purchase merchant(Merchant merchant) {
             this.merchant = merchant;
             return this;
+        }
+
+        public double costOfArticles() {
+            return items.stream().map(i -> i.calculateCost()).reduce(BigDecimal.ZERO, BigDecimal::add).doubleValue();
         }
 
         public Receipt getReceipt() {
