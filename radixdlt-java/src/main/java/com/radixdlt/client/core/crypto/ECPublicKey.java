@@ -119,7 +119,6 @@ public class ECPublicKey implements Base64Encoded {
 	byte[] calculateMAC(byte[] salt, byte[] iv, ECPublicKey ephemeralPublicKey, byte[] encrypted) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream outputStream = new DataOutputStream(baos);
-
 		outputStream.write(iv);
 		//outputStream.writeByte(ephemeralPublicKey.length());
 		outputStream.write(ephemeralPublicKey.publicKey);

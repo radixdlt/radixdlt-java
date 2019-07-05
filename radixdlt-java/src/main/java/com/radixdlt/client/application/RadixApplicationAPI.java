@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.radixdlt.client.application.translate.StageActionException;
 import com.radixdlt.client.application.translate.ShardedParticleStateId;
+import com.radixdlt.client.application.translate.data.receipt.Purchase;
+import com.radixdlt.client.application.translate.data.receipt.Receipt;
 import com.radixdlt.client.application.translate.tokens.TokenUnitConversions;
 import com.radixdlt.client.application.translate.unique.PutUniqueIdAction;
 import com.radixdlt.client.core.BootstrapConfig;
@@ -594,6 +596,16 @@ public class RadixApplicationAPI {
 	}
 
 	/**
+	 * Returns a never ending stream of token transfers with receipts, transfers stored at the current address.
+	 * pull() must be called to continually retrieve the latest transfers.
+	 *
+	 * @return a cold observable of the token transfers at the current address
+	 */
+	public Observable<TokenTransfer> observeTokenTransfersWithReceipts() {
+		return observeTokenTransfers().filter(t -> t.hasReceipt());
+	}
+
+	/**
 	 * Returns a never ending stream of token transfers stored at a given address.
 	 * pull() must be called to continually retrieve the latest transfers.
 	 *
@@ -828,6 +840,22 @@ public class RadixApplicationAPI {
 	public Result sendTokens(RRI token, RadixAddress from, RadixAddress to, BigDecimal amount) {
 		return sendTokens(token, from, to, amount, null);
 	}
+
+	public Result makePurchase(Purchase purchase) {
+		return sendTokens(getNativeTokenRef(), this.getAddress(), purchase.getReceipt());
+	}
+
+	public Result sendTokens(RRI token, RadixAddress from, Receipt receipt) {
+
+		return sendTokens(
+				token,
+				from,
+				receipt.merchantRadixAddress(),
+				receipt.getAmountToTransfer(),
+				receipt.getSerializedJsonBytes()
+		);
+	}
+
 
 	/**
 	 * Transfers an amount of a token with a data attachment to an address with a unique property

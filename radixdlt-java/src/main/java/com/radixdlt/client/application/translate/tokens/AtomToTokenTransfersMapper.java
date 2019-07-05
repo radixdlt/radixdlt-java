@@ -21,6 +21,9 @@ import com.radixdlt.client.core.atoms.Atom;
 import io.reactivex.Observable;
 import org.radix.utils.RadixConstants;
 
+
+import org.bouncycastle.util.encoders.Base64;
+
 /**
  * Maps an atom to some number of token transfer actions.
  */
@@ -89,7 +92,7 @@ public class AtomToTokenTransfersMapper implements AtomToExecutedActionsMapper<T
 							to,
 							e.getKey(),
 							summary.get(0).getValue().abs(),
-							attachment == null ? null : attachment.getBytes(RadixConstants.STANDARD_CHARSET),
+							attachment == null ? null : Base64.decode(attachment),
 							atom.getTimestamp()
 						);
 					});

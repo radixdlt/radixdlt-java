@@ -1,5 +1,6 @@
 package org.radix.serialization2.client;
 
+import com.radixdlt.client.application.translate.data.receipt.Receipt;
 import com.radixdlt.client.atommodel.rri.RRIParticle;
 import com.radixdlt.client.atommodel.tokens.UnallocatedTokensParticle;
 import com.radixdlt.client.core.network.jsonrpc.ShardRange;
