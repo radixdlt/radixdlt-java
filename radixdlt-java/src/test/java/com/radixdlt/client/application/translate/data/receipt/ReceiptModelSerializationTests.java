@@ -63,9 +63,9 @@ public class ReceiptModelSerializationTests {
 
         assertEquals(expectedReceiptAsBase64String, receiptAsBase64String);
 
-        byte[] receipBytesFromBase64String = Base64.decode(expectedReceiptAsBase64String);
+        byte[] receiptBytesFromBase64String = Base64.decode(expectedReceiptAsBase64String);
 
-        Receipt receiptFromBytes = Receipt.fromSerializedJsonBytes(receipBytesFromBase64String);
+        Receipt receiptFromBytes = Receipt.fromSerializedJsonBytes(receiptBytesFromBase64String);
 
         assertTrue(receiptFromBytes.equals(receipt));
     }
