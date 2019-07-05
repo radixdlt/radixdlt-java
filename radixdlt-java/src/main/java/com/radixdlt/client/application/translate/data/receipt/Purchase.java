@@ -3,6 +3,7 @@ package com.radixdlt.client.application.translate.data.receipt;
 import org.checkerframework.checker.nullness.Opt;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -28,6 +29,11 @@ public class Purchase {
         public Purchase addArticle(PurchasableArticle article, double quantity) {
             ReceiptItem receiptItem = ReceiptItem.articleAndQuantity(article, quantity);
             items.add(receiptItem);
+            return this;
+        }
+
+        public Purchase addArticles(List<PurchasableArticle> articleList) {
+            articleList.forEach(this::addArticle);
             return this;
         }
 
