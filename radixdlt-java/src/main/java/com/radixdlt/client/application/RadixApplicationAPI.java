@@ -844,9 +844,30 @@ public class RadixApplicationAPI {
 	public Result makePurchaseWithRads(Purchase purchase, RadixAddress customerAddress) {
 		return makePurchase(purchase, getNativeTokenRef(), customerAddress);
 	}
-	
+
 	public Result makePurchase(Purchase purchase, RRI token, RadixAddress customerAddress) {
 		return sendTokens(token, customerAddress, purchase.getReceipt());
+	}
+
+	public UnsignedAtom buildAtomFromPurchase(Purchase purchase, RRI token, ECPublicKey customerPublicKey) throws StageActionException {
+		return buildAtomFromReceipt(purchase.getReceipt(), token, customerPublicKey);
+	}
+
+	public UnsignedAtom buildAtomFromReceipt(Receipt receipt, RRI token, ECPublicKey customerPublicKey) throws StageActionException {
+
+		RadixAddress customerAddress = getAddress(customerPublicKey);
+
+		final TransferTokensAction transferTokensAction = TransferTokensAction.create(
+				token,
+				receipt.merchantRadixAddress(),
+				customerAddress,
+				receipt.getAmountToTransfer(),
+				receipt.getSerializedJsonBytes()
+		);
+
+		Transaction transaction = this.createTransaction();
+		transaction.stage(transferTokensAction);
+		return transaction.buildAtom();
 	}
 
 	public Result sendTokens(RRI token, RadixAddress from, Receipt receipt) {
