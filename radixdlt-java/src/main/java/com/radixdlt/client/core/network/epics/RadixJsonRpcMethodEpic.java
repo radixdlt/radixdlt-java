@@ -10,7 +10,6 @@ import com.radixdlt.client.core.network.actions.GetUniverseRequestAction;
 import com.radixdlt.client.core.network.actions.GetUniverseResponseAction;
 import com.radixdlt.client.core.network.actions.JsonRpcMethodAction;
 import com.radixdlt.client.core.network.actions.JsonRpcResultAction;
-import com.radixdlt.client.core.network.epics.WebSocketsEpic.WebSockets;
 import com.radixdlt.client.core.network.jsonrpc.RadixJsonRpcClient;
 import com.radixdlt.client.core.network.RadixNetworkEpic;
 import com.radixdlt.client.core.network.RadixNodeAction;

@@ -11,7 +11,6 @@ import com.radixdlt.client.core.network.actions.FetchAtomsObservationAction;
 import com.radixdlt.client.core.network.actions.FetchAtomsRequestAction;
 import com.radixdlt.client.core.network.actions.FetchAtomsSubscribeAction;
 import com.radixdlt.client.core.network.actions.FindANodeResultAction;
-import com.radixdlt.client.core.network.epics.WebSocketsEpic.WebSockets;
 import com.radixdlt.client.core.network.jsonrpc.AtomQuery;
 import com.radixdlt.client.core.network.jsonrpc.RadixJsonRpcClient;
 import com.radixdlt.client.core.network.jsonrpc.RadixJsonRpcClient.NotificationType;

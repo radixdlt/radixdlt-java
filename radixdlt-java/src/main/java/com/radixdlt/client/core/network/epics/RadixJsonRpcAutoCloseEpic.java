@@ -4,7 +4,6 @@ import com.radixdlt.client.core.network.RadixNetworkEpic;
 import com.radixdlt.client.core.network.RadixNetworkState;
 import com.radixdlt.client.core.network.RadixNodeAction;
 import com.radixdlt.client.core.network.actions.JsonRpcResultAction;
-import com.radixdlt.client.core.network.epics.WebSocketsEpic.WebSockets;
 import io.reactivex.Observable;
 import java.util.concurrent.TimeUnit;
 

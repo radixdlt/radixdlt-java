@@ -5,7 +5,6 @@ import com.radixdlt.client.core.network.RadixNetworkState;
 import com.radixdlt.client.core.network.RadixNodeAction;
 import com.radixdlt.client.core.network.actions.CloseWebSocketAction;
 import com.radixdlt.client.core.network.actions.ConnectWebSocketAction;
-import com.radixdlt.client.core.network.epics.WebSocketsEpic.WebSockets;
 import io.reactivex.Observable;
 
 /**

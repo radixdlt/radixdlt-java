@@ -20,19 +20,24 @@ import com.radixdlt.client.core.network.epics.ConnectWebSocketEpic;
 import com.radixdlt.client.core.network.epics.DiscoverNodesEpic;
 import com.radixdlt.client.core.network.epics.FetchAtomsEpic;
 import com.radixdlt.client.core.network.epics.FindANodeEpic;
+import com.radixdlt.client.core.network.epics.ObserveAtomEpic;
 import com.radixdlt.client.core.network.epics.RadixJsonRpcAutoCloseEpic;
 import com.radixdlt.client.core.network.epics.RadixJsonRpcAutoConnectEpic;
 import com.radixdlt.client.core.network.epics.RadixJsonRpcMethodEpic;
 import com.radixdlt.client.core.network.epics.SubmitAtomEpic;
 import com.radixdlt.client.core.network.epics.WebSocketEventsEpic;
+import com.radixdlt.client.core.network.epics.WebSockets;
+import com.radixdlt.client.core.network.epics.WebSocketsEpic;
 import com.radixdlt.client.core.network.epics.WebSocketsEpic.WebSocketsEpicBuilder;
 import com.radixdlt.client.core.network.reducers.RadixNetwork;
 import com.radixdlt.client.core.network.selector.RandomSelector;
 
+import com.radixdlt.client.core.network.websocket.WebSocketClient;
 import io.reactivex.Observable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import okhttp3.WebSocket;
 
 /**
  * A RadixUniverse represents the interface through which a client can interact
@@ -82,25 +87,28 @@ public final class RadixUniverse {
 				.forEach(addr -> inMemoryAtomStore.store(addr, AtomObservation.stored(atom)))
 		);
 
+		final WebSockets webSockets = new WebSockets();
 		final InMemoryAtomStoreReducer atomStoreReducer = new InMemoryAtomStoreReducer(inMemoryAtomStore);
+
+		final WebSocketsEpic websockets = new WebSocketsEpicBuilder()
+			.setWebSockets(webSockets)
+			.add(WebSocketEventsEpic::new)
+			.add(ConnectWebSocketEpic::new)
+			.add(ObserveAtomEpic::new)
+			.add(SubmitAtomEpic::new)
+			.add(FetchAtomsEpic::new)
+			.add(RadixJsonRpcMethodEpic::createGetLivePeersEpic)
+			.add(RadixJsonRpcMethodEpic::createGetNodeDataEpic)
+			.add(RadixJsonRpcMethodEpic::createGetUniverseEpic)
+			.add(RadixJsonRpcAutoConnectEpic::new)
+			.add(RadixJsonRpcAutoCloseEpic::new)
+			.build();
 
 		RadixNetworkControllerBuilder builder = new RadixNetworkControllerBuilder()
 			.setNetwork(new RadixNetwork())
 			.addInitialNodes(initialNetwork)
 			.addReducer(atomStoreReducer::reduce)
-			.addEpic(
-				new WebSocketsEpicBuilder()
-					.add(WebSocketEventsEpic::new)
-					.add(ConnectWebSocketEpic::new)
-					.add(SubmitAtomEpic::new)
-					.add(FetchAtomsEpic::new)
-					.add(RadixJsonRpcMethodEpic::createGetLivePeersEpic)
-					.add(RadixJsonRpcMethodEpic::createGetNodeDataEpic)
-					.add(RadixJsonRpcMethodEpic::createGetUniverseEpic)
-					.add(RadixJsonRpcAutoConnectEpic::new)
-					.add(RadixJsonRpcAutoCloseEpic::new)
-					.build()
-			)
+			.addEpic(websockets)
 			.addEpic(new FindANodeEpic(new RandomSelector()));
 
 		discoveryEpics.forEach(builder::addEpic);

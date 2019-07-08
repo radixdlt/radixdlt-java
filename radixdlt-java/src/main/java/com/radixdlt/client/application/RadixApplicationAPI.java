@@ -14,9 +14,13 @@ import com.radixdlt.client.core.ledger.AtomStore;
 import com.radixdlt.client.core.network.RadixNode;
 import com.radixdlt.client.core.network.RadixNodeAction;
 import com.radixdlt.client.core.network.actions.DiscoverMoreNodesAction;
+import com.radixdlt.client.core.network.actions.ObserveAtomAction;
+import com.radixdlt.client.core.network.actions.ObserveAtomStatusAction;
+import com.radixdlt.client.core.network.actions.ObserveAtomSubscribeAction;
 import com.radixdlt.client.core.network.actions.SubmitAtomCompleteAction;
 import com.radixdlt.client.core.network.actions.SubmitAtomRequestAction;
 import com.radixdlt.client.core.network.actions.SubmitAtomSendAction;
+import com.radixdlt.client.core.network.websocket.WebSocketClient;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,11 +30,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.radix.common.ID.AID;
 import org.radix.common.tuples.Pair;
 import org.radix.utils.RadixConstants;
 import org.slf4j.Logger;
@@ -912,6 +918,7 @@ public class RadixApplicationAPI {
 	public final class Transaction {
 		private final String uuid;
 		private List<Action> workingArea = new ArrayList<>();
+		private AtomicReference<UnsignedAtom> atom = new AtomicReference<>();
 
 		private Transaction() {
 			this.uuid = UUID.randomUUID().toString();
@@ -973,11 +980,19 @@ public class RadixApplicationAPI {
 
 		/**
 		 * Creates an atom composed of all of the currently staged particles.
+		 * TODO: need to cleanup interfaces
 		 * @return an unsigned atom
 		 */
 		public UnsignedAtom buildAtom() {
-			List<ParticleGroup> pgs = universe.getAtomStore().getStagedAndClear(uuid);
-			return buildAtomWithFee(pgs);
+			UnsignedAtom builtAtom = atom.get();
+			if (builtAtom == null) {
+				List<ParticleGroup> pgs = universe.getAtomStore().getStagedAndClear(uuid);
+				builtAtom = buildAtomWithFee(pgs);
+				if (!atom.compareAndSet(null, builtAtom)) {
+					return atom.get();
+				}
+			}
+			return builtAtom;
 		}
 
 		/**
@@ -1010,6 +1025,26 @@ public class RadixApplicationAPI {
 	 */
 	public Transaction createTransaction() {
 		return new Transaction();
+	}
+
+	public Observable<ObserveAtomAction> observeAtom(AID aid, RadixNode node) {
+		return Observable.fromCallable(() -> UUID.randomUUID().toString())
+			.flatMap(uuid -> {
+				Observable<ObserveAtomAction> observations =
+					universe.getNetworkController().getActions()
+						.ofType(ObserveAtomAction.class)
+						.filter(o -> o.getUuid().equals(uuid))
+						.startWith(ObserveAtomSubscribeAction.of(uuid, aid, node))
+						.publish()
+						.autoConnect(2);
+
+				Observable<ObserveAtomAction> dispatch = observations
+					.take(1)
+					.doOnNext(universe.getNetworkController()::dispatch)
+					.skip(1);
+
+				return Observable.merge(dispatch, observations.skip(1));
+			});
 	}
 
 	/**
