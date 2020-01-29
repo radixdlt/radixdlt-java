@@ -2,6 +2,7 @@ package com.radixdlt.client.core;
 
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableSet;
+import com.radixdlt.client.core.network.HttpClients;
 import com.radixdlt.client.core.address.RadixUniverseConfig;
 import com.radixdlt.client.core.network.RadixNetworkEpic;
 import com.radixdlt.client.core.network.RadixNode;
@@ -32,7 +33,7 @@ public class BootstrapByTrustedNode implements BootstrapConfig {
 		this.trustedNodes = ImmutableSet.copyOf(trustedNodes);
 		RadixNode firstNode = this.trustedNodes.iterator().next();
 		this.memoizer = Suppliers.memoize(() -> {
-			final OkHttpClient client = new OkHttpClient();
+			final OkHttpClient client = HttpClients.getSslAllTrustingClient();
 			final Call call = client.newCall(firstNode.getHttpEndpoint("/api/universe"));
 			final String universeJson;
 			try (Response response = call.execute();
@@ -42,7 +43,7 @@ public class BootstrapByTrustedNode implements BootstrapConfig {
 				}
 				universeJson = body.string();
 			} catch (IOException e) {
-				throw new IllegalStateException("Could not retrieve universe configuration.");
+				throw new IllegalStateException("IOException retrieving universe configuration", e);
 			}
 
 			return Serialize.getInstance().fromJson(universeJson, RadixUniverseConfig.class);
