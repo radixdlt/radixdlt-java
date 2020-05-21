@@ -42,9 +42,15 @@ import com.radixdlt.client.application.translate.StageActionException;
 import com.radixdlt.client.application.translate.StatefulActionToParticleGroupsMapper;
 import com.radixdlt.client.application.translate.StatelessActionToParticleGroupsMapper;
 import com.radixdlt.client.application.translate.data.AtomToDecryptedMessageMapper;
+import com.radixdlt.client.application.translate.data.AtomToCRUDataUpdateMapper;
+import com.radixdlt.client.application.translate.data.CRUDataUpdate;
+import com.radixdlt.client.application.translate.data.CreateDataAction;
+import com.radixdlt.client.application.translate.data.CreateDataToParticleGroupsMapper;
 import com.radixdlt.client.application.translate.data.DecryptedMessage;
 import com.radixdlt.client.application.translate.data.SendMessageAction;
 import com.radixdlt.client.application.translate.data.SendMessageToParticleGroupsMapper;
+import com.radixdlt.client.application.translate.data.UpdateDataAction;
+import com.radixdlt.client.application.translate.data.UpdateDataToParticleGroupsMapper;
 import com.radixdlt.client.application.translate.tokens.AtomToTokenTransfersMapper;
 import com.radixdlt.client.application.translate.tokens.BurnTokensAction;
 import com.radixdlt.client.application.translate.tokens.BurnTokensActionMapper;
@@ -146,13 +152,16 @@ public class RadixApplicationAPI {
 				SendMessageAction.class,
 				new SendMessageToParticleGroupsMapper(ECKeyPair::generateNew)
 			)
+			.addStatelessParticlesMapper(CreateDataAction.class, new CreateDataToParticleGroupsMapper())
 			.addStatelessParticlesMapper(CreateTokenAction.class, new CreateTokenToParticleGroupsMapper())
 			.addStatelessParticlesMapper(PutUniqueIdAction.class, new PutUniqueIdToParticleGroupsMapper())
+			.addStatefulParticlesMapper(UpdateDataAction.class, new UpdateDataToParticleGroupsMapper())
 			.addStatefulParticlesMapper(MintTokensAction.class, new MintTokensActionMapper())
 			.addStatefulParticlesMapper(BurnTokensAction.class, new BurnTokensActionMapper())
 			.addStatefulParticlesMapper(TransferTokensAction.class, new TransferTokensToParticleGroupsMapper())
 			.addReducer(new TokenDefinitionsReducer())
 			.addReducer(new TokenBalanceReducer())
+			.addAtomMapper(new AtomToCRUDataUpdateMapper())
 			.addAtomMapper(new AtomToDecryptedMessageMapper())
 			.addAtomMapper(new AtomToTokenTransfersMapper())
 			.addAtomErrorMapper(new AlreadyUsedUniqueIdReasonMapper());
@@ -434,6 +443,50 @@ public class RadixApplicationAPI {
 		SendMessageAction sendMessageAction = SendMessageAction.create(getAddress(), toAddress, data, encrypt);
 		return execute(sendMessageAction);
 	}
+
+    /**
+     * Returns a never ending stream of messages stored at a given address. pull()
+     * must be called to continually retrieve the latest messages.
+     *
+     * @param address the address to retrieve the messages from
+     * @return a cold observable of the messages at the given address
+     */
+    public Observable<CRUDataUpdate> observeData(RadixAddress address) {
+        Objects.requireNonNull(address);
+        return observeActions(CRUDataUpdate.class, address);
+    }
+
+    /**
+     * Sends a message to one's self
+     *
+     * @param data    the message to send
+     * @param encrypt if true, encrypts the message with a encrypted private key
+     * @return result of the send message execution
+     */
+    public Result createData(RRI rri, byte[] data) {
+        RadixAddress address = getAddress();
+        if (!rri.getAddress().equals(address)) {
+            throw new IllegalArgumentException();
+        }
+        CreateDataAction createDataAction = CreateDataAction.create(rri, data);
+        return execute(createDataAction);
+    }
+
+    /**
+     * Sends a message to one's self
+     *
+     * @param data    the message to send
+     * @param encrypt if true, encrypts the message with a encrypted private key
+     * @return result of the send message execution
+     */
+    public Result updateData(RRI rri, byte[] data) {
+        RadixAddress address = getAddress();
+        if (!rri.getAddress().equals(address)) {
+            throw new IllegalArgumentException();
+        }
+        UpdateDataAction updateAction = UpdateDataAction.create(rri, data);
+        return execute(updateAction);
+    }
 
 	/**
 	 * Returns a never ending stream of token transfers stored at the current address.
