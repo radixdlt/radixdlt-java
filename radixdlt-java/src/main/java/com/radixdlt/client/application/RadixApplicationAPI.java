@@ -45,6 +45,7 @@ import com.radixdlt.client.application.translate.data.AtomToDecryptedMessageMapp
 import com.radixdlt.client.application.translate.data.DecryptedMessage;
 import com.radixdlt.client.application.translate.data.SendMessageAction;
 import com.radixdlt.client.application.translate.data.SendMessageToParticleGroupsMapper;
+import com.radixdlt.client.application.translate.tokens.AmmStateReducer;
 import com.radixdlt.client.application.translate.tokens.AtomToTokenTransfersMapper;
 import com.radixdlt.client.application.translate.tokens.BurnTokensAction;
 import com.radixdlt.client.application.translate.tokens.BurnTokensActionMapper;
@@ -156,6 +157,7 @@ public class RadixApplicationAPI {
 			.addStatefulParticlesMapper(TransferTokensAction.class, new TransferTokensToParticleGroupsMapper())
 			.addReducer(new TokenDefinitionsReducer())
 			.addReducer(new TokenBalanceReducer())
+			.addReducer(new AmmStateReducer())
 			.addAtomMapper(new AtomToDecryptedMessageMapper())
 			.addAtomMapper(new AtomToTokenTransfersMapper())
 			.addAtomErrorMapper(new AlreadyUsedUniqueIdReasonMapper());

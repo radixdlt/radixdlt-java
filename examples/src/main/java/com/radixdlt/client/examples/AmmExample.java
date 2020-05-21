@@ -3,6 +3,7 @@ package com.radixdlt.client.examples;
 import com.radixdlt.client.application.RadixApplicationAPI;
 import com.radixdlt.client.application.identity.RadixIdentities;
 import com.radixdlt.client.application.identity.RadixIdentity;
+import com.radixdlt.client.application.translate.tokens.AmmState;
 import com.radixdlt.client.application.translate.tokens.CreateAmmAction;
 import com.radixdlt.client.core.Bootstrap;
 import com.radixdlt.identifiers.RRI;
@@ -41,7 +42,12 @@ public class AmmExample {
 			UInt256.EIGHT
 		);
 
-		api.execute(createAmmAction).blockUntilComplete();
+		api.observeState(AmmState.class, api.getAddress())
+			.subscribe(System.out::println);
+
+		api.execute(createAmmAction)
+			.toObservable()
+			.subscribe(System.out::println);
 	}
 
 }
