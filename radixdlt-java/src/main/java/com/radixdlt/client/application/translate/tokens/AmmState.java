@@ -1,9 +1,7 @@
 package com.radixdlt.client.application.translate.tokens;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.radixdlt.client.application.translate.ApplicationState;
 import com.radixdlt.identifiers.RRI;
-import com.radixdlt.serialization.DsonOutput;
 import com.radixdlt.utils.UInt256;
 
 public class AmmState implements ApplicationState {
@@ -19,6 +17,26 @@ public class AmmState implements ApplicationState {
 		this.tokenB = tokenB;
 		this.aAmount = aAmount;
 		this.bAmount = bAmount;
+	}
+
+	public RRI getRRI() {
+		return rri;
+	}
+
+	public RRI getTokenA() {
+		return tokenA;
+	}
+
+	public RRI getTokenB() {
+		return tokenB;
+	}
+
+	public UInt256 getaAmount() {
+		return aAmount;
+	}
+
+	public UInt256 getbAmount() {
+		return bAmount;
 	}
 
 	public String toString() {
