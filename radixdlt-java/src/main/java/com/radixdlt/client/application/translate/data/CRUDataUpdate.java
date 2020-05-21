@@ -66,6 +66,6 @@ public class CRUDataUpdate {
 
 	@Override
 	public String toString() {
-		return timestamp + " " + rri + " -> " + " " + Bytes.toHexString(data);
+		return timestamp + " " + rri + " " + Bytes.toHexString(data);
 	}
 }

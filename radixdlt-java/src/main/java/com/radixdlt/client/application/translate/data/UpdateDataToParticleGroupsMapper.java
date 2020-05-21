@@ -44,20 +44,22 @@ public class UpdateDataToParticleGroupsMapper implements StatefulActionToParticl
 
     @Override
     public Set<ShardedParticleStateId> requiredState(UpdateDataAction updateDataAction) {
-        RadixAddress addresss = updateDataAction.getRRI().getAddress();
-        return ImmutableSet.of(ShardedParticleStateId.of(CRUDataParticle.class, addresss));
+        RadixAddress address = updateDataAction.getRRI().getAddress();
+        return ImmutableSet.of(ShardedParticleStateId.of(CRUDataParticle.class, address));
     }
 
-    @SuppressWarnings("serial")
     @Override
     public List<ParticleGroup> mapToParticleGroups(UpdateDataAction updateDataAction, Stream<Particle> store) throws StageActionException {
         RRI rri = updateDataAction.getRRI();
-        List<CRUDataParticle> records = store.filter(p -> p instanceof CRUDataParticle)
-                .map(CRUDataParticle.class::cast)
-                .filter(p -> p.rri().equals(rri))
-                .collect(Collectors.toList());
+        List<Particle> particles = store.collect(Collectors.toList());
+        List<CRUDataParticle> records = particles.stream()
+        	.filter(p -> p instanceof CRUDataParticle)
+            .map(CRUDataParticle.class::cast)
+            .filter(p -> p.getRRI().equals(rri))
+            .collect(Collectors.toList());
         if (records.size() != 1) {
-            throw new StageActionException("Broken storage") { };
+        	String msg = String.format("Broken storage (%s) %s", records.size(), particles);
+            throw new StageActionException(msg) { };
         }
         CRUDataParticle prevData = records.get(0);
         CRUDataParticle newData = new CRUDataParticle(rri, prevData.serialno() + 1, updateDataAction.getData());

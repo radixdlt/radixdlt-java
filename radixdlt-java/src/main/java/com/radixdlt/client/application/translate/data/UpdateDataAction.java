@@ -53,6 +53,6 @@ public final class UpdateDataAction implements Action {
 
     @Override
     public String toString() {
-        return "Updating data FOR resource" + rri;
+        return "Updating data FOR resource " + rri;
     }
 }

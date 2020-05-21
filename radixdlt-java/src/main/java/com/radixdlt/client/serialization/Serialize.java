@@ -31,7 +31,7 @@ import java.util.Collection;
 
 import com.radixdlt.client.atommodel.tokens.FixedSupplyTokenDefinitionParticle;
 import com.radixdlt.client.atommodel.tokens.TransferrableTokensParticle;
-
+import com.radixdlt.client.atommodel.cru.CRUDataParticle;
 import com.radixdlt.client.atommodel.message.MessageParticle;
 import com.radixdlt.client.atommodel.tokens.MutableSupplyTokenDefinitionParticle;
 import com.radixdlt.client.atommodel.unique.UniqueParticle;
@@ -66,6 +66,7 @@ public final class Serialize {
 			return Arrays.asList(
 				Atom.class,
 				AtomEvent.class,
+				CRUDataParticle.class,
 				ParticleGroup.class,
 				Particle.class,
 				RRIParticle.class,

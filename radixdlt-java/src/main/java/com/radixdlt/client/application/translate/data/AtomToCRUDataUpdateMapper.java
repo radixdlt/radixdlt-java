@@ -50,7 +50,7 @@ public class AtomToCRUDataUpdateMapper implements AtomToExecutedActionsMapper<CR
                 .map(SpunParticle::getParticle)
                 .filter(p -> p instanceof CRUDataParticle)
                 .map(CRUDataParticle.class::cast)
-                .map(p -> new CRUDataUpdate(p.rri(), p.data(), timestamp, p.euid()))
+                .map(p -> new CRUDataUpdate(p.getRRI(), p.data(), timestamp, p.euid()))
                 .collect(Collectors.toList());
         return Observable.fromIterable(dataUpdates);
 	}

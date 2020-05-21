@@ -22,6 +22,7 @@ import javax.annotation.concurrent.Immutable;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.radixdlt.client.atommodel.Identifiable;
 import com.radixdlt.client.core.atoms.particles.Particle;
 import com.radixdlt.identifiers.RRI;
 import com.radixdlt.serialization.DsonOutput;
@@ -34,7 +35,7 @@ import com.radixdlt.utils.Bytes;
  */
 @Immutable
 @SerializerId2("radix.particles.cru")
-public final class CRUDataParticle extends Particle {
+public final class CRUDataParticle extends Particle implements Identifiable {
 
     // Account and lookup key
     @JsonProperty("rri")
@@ -64,9 +65,10 @@ public final class CRUDataParticle extends Particle {
         this.data = Objects.requireNonNull(data);
     }
 
-    public RRI rri() {
-        return this.rri;
-    }
+	@Override
+	public RRI getRRI() {
+		return this.rri;
+	}
 
     public long serialno() {
         return this.serialno;
