@@ -48,6 +48,8 @@ import com.radixdlt.client.application.translate.data.SendMessageToParticleGroup
 import com.radixdlt.client.application.translate.tokens.AtomToTokenTransfersMapper;
 import com.radixdlt.client.application.translate.tokens.BurnTokensAction;
 import com.radixdlt.client.application.translate.tokens.BurnTokensActionMapper;
+import com.radixdlt.client.application.translate.tokens.CreateAmmAction;
+import com.radixdlt.client.application.translate.tokens.CreateAmmToParticleGroupsMapper;
 import com.radixdlt.client.application.translate.tokens.CreateTokenAction;
 import com.radixdlt.client.application.translate.tokens.CreateTokenAction.TokenSupplyType;
 import com.radixdlt.client.application.translate.tokens.CreateTokenToParticleGroupsMapper;
@@ -146,6 +148,7 @@ public class RadixApplicationAPI {
 				SendMessageAction.class,
 				new SendMessageToParticleGroupsMapper(ECKeyPair::generateNew)
 			)
+			.addStatelessParticlesMapper(CreateAmmAction.class, new CreateAmmToParticleGroupsMapper())
 			.addStatelessParticlesMapper(CreateTokenAction.class, new CreateTokenToParticleGroupsMapper())
 			.addStatelessParticlesMapper(PutUniqueIdAction.class, new PutUniqueIdToParticleGroupsMapper())
 			.addStatefulParticlesMapper(MintTokensAction.class, new MintTokensActionMapper())

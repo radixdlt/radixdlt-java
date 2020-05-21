@@ -23,6 +23,7 @@
 package com.radixdlt.client.serialization;
 
 import com.radixdlt.client.atommodel.rri.RRIParticle;
+import com.radixdlt.client.atommodel.tokens.AmmParticle;
 import com.radixdlt.client.atommodel.tokens.UnallocatedTokensParticle;
 import com.radixdlt.client.core.network.jsonrpc.ShardRange;
 import com.radixdlt.client.core.network.jsonrpc.ShardSpace;
@@ -76,6 +77,7 @@ public final class Serialize {
 				UnallocatedTokensParticle.class,
 				TransferrableTokensParticle.class,
 				UniqueParticle.class,
+				AmmParticle.class,
 
 				ECDSASignature.class,
 				NodeRunnerData.class,
