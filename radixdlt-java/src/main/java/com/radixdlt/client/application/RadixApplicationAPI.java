@@ -42,8 +42,8 @@ import com.radixdlt.client.application.translate.StageActionException;
 import com.radixdlt.client.application.translate.StatefulActionToParticleGroupsMapper;
 import com.radixdlt.client.application.translate.StatelessActionToParticleGroupsMapper;
 import com.radixdlt.client.application.translate.data.AtomToDecryptedMessageMapper;
+import com.radixdlt.client.application.translate.data.CRUDataUpdate;
 import com.radixdlt.client.application.translate.data.AtomToCRUDataUpdateMapper;
-import com.radixdlt.client.application.translate.data.CRUDataUpdateTest;
 import com.radixdlt.client.application.translate.data.CreateDataAction;
 import com.radixdlt.client.application.translate.data.CreateDataToParticleGroupsMapper;
 import com.radixdlt.client.application.translate.data.DecryptedMessage;
@@ -451,9 +451,9 @@ public class RadixApplicationAPI {
      * @param address the address to retrieve data from
      * @return a cold observable of the messages at the given address
      */
-    public Observable<CRUDataUpdateTest> observeData(RadixAddress address) {
+    public Observable<CRUDataUpdate> observeData(RadixAddress address) {
         Objects.requireNonNull(address);
-        return observeActions(CRUDataUpdateTest.class, address);
+        return observeActions(CRUDataUpdate.class, address);
     }
 
     /**
