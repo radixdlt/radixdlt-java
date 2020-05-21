@@ -48,15 +48,16 @@ public class UpdateDataToParticleGroupsMapper implements StatefulActionToParticl
         return ImmutableSet.of(ShardedParticleStateId.of(CRUDataParticle.class, addresss));
     }
 
+    @SuppressWarnings("serial")
     @Override
     public List<ParticleGroup> mapToParticleGroups(UpdateDataAction updateDataAction, Stream<Particle> store) throws StageActionException {
         RRI rri = updateDataAction.getRRI();
-        List<CRUDataParticle> records = store.filter((p) -> p instanceof CRUDataParticle)
+        List<CRUDataParticle> records = store.filter( p  -> p instanceof CRUDataParticle)
                 .map(CRUDataParticle.class::cast)
                 .filter(p -> p.rri().equals(rri))
                 .collect(Collectors.toList());
         if (records.size() != 1) {
-            throw new IllegalStateException("Broken");
+            throw new StageActionException("Broken storage") {};
         }
         CRUDataParticle prevData = records.get(0);
         CRUDataParticle newData = new CRUDataParticle(rri, prevData.serialno() + 1, updateDataAction.getData());

@@ -43,7 +43,7 @@ import com.radixdlt.client.application.translate.StatefulActionToParticleGroupsM
 import com.radixdlt.client.application.translate.StatelessActionToParticleGroupsMapper;
 import com.radixdlt.client.application.translate.data.AtomToDecryptedMessageMapper;
 import com.radixdlt.client.application.translate.data.AtomToCRUDataUpdateMapper;
-import com.radixdlt.client.application.translate.data.CRUDataUpdate;
+import com.radixdlt.client.application.translate.data.CRUDataUpdateTest;
 import com.radixdlt.client.application.translate.data.CreateDataAction;
 import com.radixdlt.client.application.translate.data.CreateDataToParticleGroupsMapper;
 import com.radixdlt.client.application.translate.data.DecryptedMessage;
@@ -445,23 +445,23 @@ public class RadixApplicationAPI {
 	}
 
     /**
-     * Returns a never ending stream of messages stored at a given address. pull()
-     * must be called to continually retrieve the latest messages.
+     * Returns a never ending stream of data stored at a given address. The pull()
+     * method must be called to continually retrieve the latest messages.
      *
-     * @param address the address to retrieve the messages from
+     * @param address the address to retrieve data from
      * @return a cold observable of the messages at the given address
      */
-    public Observable<CRUDataUpdate> observeData(RadixAddress address) {
+    public Observable<CRUDataUpdateTest> observeData(RadixAddress address) {
         Objects.requireNonNull(address);
-        return observeActions(CRUDataUpdate.class, address);
+        return observeActions(CRUDataUpdateTest.class, address);
     }
 
     /**
-     * Sends a message to one's self
+     * Creates a data resource and store it
      *
-     * @param data    the message to send
-     * @param encrypt if true, encrypts the message with a encrypted private key
-     * @return result of the send message execution
+     * @param rri the resource which will be associated with this data
+     * @param data to be store
+     * @return result of the create data action
      */
     public Result createData(RRI rri, byte[] data) {
         RadixAddress address = getAddress();
@@ -473,10 +473,10 @@ public class RadixApplicationAPI {
     }
 
     /**
-     * Sends a message to one's self
+     * Update an existing data resource
      *
-     * @param data    the message to send
-     * @param encrypt if true, encrypts the message with a encrypted private key
+     * @param rri the resource which  is associated with this data
+     * @param data new version of data
      * @return result of the send message execution
      */
     public Result updateData(RRI rri, byte[] data) {
