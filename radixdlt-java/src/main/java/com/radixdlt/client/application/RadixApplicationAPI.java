@@ -149,7 +149,7 @@ public class RadixApplicationAPI {
 				SendMessageAction.class,
 				new SendMessageToParticleGroupsMapper(ECKeyPair::generateNew)
 			)
-			.addStatelessParticlesMapper(CreateAmmAction.class, new CreateAmmToParticleGroupsMapper())
+			.addStatefulParticlesMapper(CreateAmmAction.class, new CreateAmmToParticleGroupsMapper())
 			.addStatelessParticlesMapper(CreateTokenAction.class, new CreateTokenToParticleGroupsMapper())
 			.addStatelessParticlesMapper(PutUniqueIdAction.class, new PutUniqueIdToParticleGroupsMapper())
 			.addStatefulParticlesMapper(MintTokensAction.class, new MintTokensActionMapper())
