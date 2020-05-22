@@ -39,7 +39,7 @@ public class SwapToParticleGroupsMapper implements StatefulActionToParticleGroup
 	public Set<ShardedParticleStateId> requiredState(SwapAction action) {
 		return ImmutableSet.of(
 			ShardedParticleStateId.of(AmmParticle.class, action.getAmmRri().getAddress()),
-			ShardedParticleStateId.of(TransferrableTokensParticle.class, action.getAmmRri().getAddress())
+			ShardedParticleStateId.of(TransferrableTokensParticle.class, action.getMyAddress())
 		);
 	}
 
@@ -100,7 +100,10 @@ public class SwapToParticleGroupsMapper implements StatefulActionToParticleGroup
 		AmmParticle ammParticle = particles.stream()
 			.filter(AmmParticle.class::isInstance)
 			.map(AmmParticle.class::cast)
-			.filter(p -> p.getRRI().equals(action.getAmmRri()))
+			.filter(p -> {
+				System.out.println(p);
+				return p.getRRI().equals(action.getAmmRri());
+			})
 			.findFirst()
 			.orElseThrow(() -> new RuntimeException("Could not find AMM"));
 
