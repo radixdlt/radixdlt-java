@@ -32,24 +32,23 @@ import com.radixdlt.client.core.atoms.ParticleGroup;
 import com.radixdlt.client.core.atoms.particles.SpunParticle;
 
 /**
- * Maps a send message action to the particles necessary to be included in an
- * atom.
+ * Maps a create CRU data action to the particles necessary to be included in an atom.
  */
-public class CreateDataToParticleGroupsMapper implements StatelessActionToParticleGroupsMapper<CreateDataAction> {
+public class CreateDataToParticleGroupsMapper implements StatelessActionToParticleGroupsMapper<CreateCRUDataAction> {
 
-    private static final int INITIAL_VERSION = 0;
+	private static final int INITIAL_VERSION = 0;
 
-    /**
-     *
-     * @param action the action to mapToParticles to particles
-     * @return observable of spunparticles to be included in an atom for a given
-     *         action
-     */
-    @Override
-    public List<ParticleGroup> mapToParticleGroups(CreateDataAction action) {
-        RRIParticle rriParticle = new RRIParticle(action.getRRI());
-        CRUDataParticle cruParticule = new CRUDataParticle(action.getRRI(), INITIAL_VERSION, action.getData());
-        ParticleGroup particleGroup = ParticleGroup.of(SpunParticle.down(rriParticle), SpunParticle.up(cruParticule));
-        return Collections.singletonList(particleGroup);
-    }
+	/**
+	 * Create {@link ParticleGroup} objects representing the specified user action.
+	 *
+	 * @param action the action to mapToParticles to particles
+	 * @return observable of particle groups to be included in an atom for a given action
+	 */
+	@Override
+	public List<ParticleGroup> mapToParticleGroups(CreateCRUDataAction action) {
+		RRIParticle rriParticle = new RRIParticle(action.getRRI());
+		CRUDataParticle cruParticule = new CRUDataParticle(action.getRRI(), INITIAL_VERSION, action.getData());
+		ParticleGroup particleGroup = ParticleGroup.of(SpunParticle.down(rriParticle), SpunParticle.up(cruParticule));
+		return Collections.singletonList(particleGroup);
+	}
 }

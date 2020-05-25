@@ -26,33 +26,35 @@ import java.util.Objects;
 
 import com.radixdlt.client.application.translate.Action;
 import com.radixdlt.identifiers.RRI;
+import com.radixdlt.utils.Bytes;
 
 /**
- * An Action object which sends a data transaction from one account to another.
+ * An Action object which updates a CRU data object.
  */
-public final class UpdateDataAction implements Action {
+public final class UpdateCRUDataAction implements Action {
     private final RRI rri;
     private final byte[] data;
 
-    private UpdateDataAction(RRI rri, byte[] data) {
+    private UpdateCRUDataAction(RRI rri, byte[] data) {
         this.rri = rri;
         this.data = Objects.requireNonNull(data);
     }
 
-    public static UpdateDataAction create(RRI rri, byte[] data) {
-        return new UpdateDataAction(rri, data);
+    public static UpdateCRUDataAction create(RRI rri, byte[] data) {
+        return new UpdateCRUDataAction(rri, data);
     }
 
     public byte[] getData() {
-        return data;
+        return this.data;
     }
 
     public RRI getRRI() {
-        return rri;
+        return this.rri;
     }
 
     @Override
     public String toString() {
-        return "Updating data FOR resource " + rri;
+    	String dataString = this.data == null ? "null" : Bytes.toBase64String(this.data);
+        return String.format("%s[%s:%s]", getClass().getSimpleName(), this.rri, dataString);
     }
 }

@@ -29,7 +29,6 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableSet;
 import com.radixdlt.client.application.translate.ShardedParticleStateId;
-import com.radixdlt.client.application.translate.StageActionException;
 import com.radixdlt.client.application.translate.StatefulActionToParticleGroupsMapper;
 import com.radixdlt.client.atommodel.cru.CRUDataParticle;
 import com.radixdlt.client.core.atoms.ParticleGroup;
@@ -38,32 +37,34 @@ import com.radixdlt.client.core.atoms.particles.SpunParticle;
 import com.radixdlt.identifiers.RRI;
 import com.radixdlt.identifiers.RadixAddress;
 
+/**
+ * Creates {@link ParticleGroup} objects for specified CRU data update.
+ */
+public class UpdateCRUDataToParticleGroupsMapper implements StatefulActionToParticleGroupsMapper<UpdateCRUDataAction> {
 
+	@Override
+	public Set<ShardedParticleStateId> requiredState(UpdateCRUDataAction updateDataAction) {
+		RadixAddress address = updateDataAction.getRRI().getAddress();
+		return ImmutableSet.of(ShardedParticleStateId.of(CRUDataParticle.class, address));
+	}
 
-public class UpdateDataToParticleGroupsMapper implements StatefulActionToParticleGroupsMapper<UpdateDataAction> {
-
-    @Override
-    public Set<ShardedParticleStateId> requiredState(UpdateDataAction updateDataAction) {
-        RadixAddress address = updateDataAction.getRRI().getAddress();
-        return ImmutableSet.of(ShardedParticleStateId.of(CRUDataParticle.class, address));
-    }
-
-    @Override
-    public List<ParticleGroup> mapToParticleGroups(UpdateDataAction updateDataAction, Stream<Particle> store) throws StageActionException {
-        RRI rri = updateDataAction.getRRI();
-        List<Particle> particles = store.collect(Collectors.toList());
-        List<CRUDataParticle> records = particles.stream()
-        	.filter(p -> p instanceof CRUDataParticle)
-            .map(CRUDataParticle.class::cast)
-            .filter(p -> p.getRRI().equals(rri))
-            .collect(Collectors.toList());
-        if (records.size() != 1) {
-        	String msg = String.format("Broken storage (%s) %s", records.size(), particles);
-            throw new StageActionException(msg) { };
-        }
-        CRUDataParticle prevData = records.get(0);
-        CRUDataParticle newData = new CRUDataParticle(rri, prevData.serialno() + 1, updateDataAction.getData());
-        ParticleGroup particleGroup = ParticleGroup.of(SpunParticle.down(prevData), SpunParticle.up(newData));
-        return Collections.singletonList(particleGroup);
-    }
+	@Override
+	public List<ParticleGroup> mapToParticleGroups(UpdateCRUDataAction updateDataAction, Stream<Particle> store) throws CRUDataMissingException {
+		RRI rri = updateDataAction.getRRI();
+		List<Particle> particles = store.collect(Collectors.toList());
+		List<CRUDataParticle> records = particles.stream()
+			.filter(p -> p instanceof CRUDataParticle)
+			.map(CRUDataParticle.class::cast)
+			.filter(p -> p.getRRI().equals(rri))
+			.collect(Collectors.toList());
+		if (records.size() != 1) {
+			// Serious problem if records is not empty, as this means that there is more than one CRU Data particle
+			assert records.isEmpty();
+			throw new CRUDataMissingException(rri, records.size());
+		}
+		CRUDataParticle prevData = records.get(0);
+		CRUDataParticle newData = new CRUDataParticle(rri, prevData.serialno() + 1, updateDataAction.getData());
+		ParticleGroup particleGroup = ParticleGroup.of(SpunParticle.down(prevData), SpunParticle.up(newData));
+		return Collections.singletonList(particleGroup);
+	}
 }

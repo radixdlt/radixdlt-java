@@ -23,6 +23,9 @@
 package com.radixdlt.client.application.translate.data;
 
 
+import java.util.Arrays;
+import java.util.Objects;
+
 import com.radixdlt.identifiers.EUID;
 import com.radixdlt.identifiers.RRI;
 import com.radixdlt.utils.Bytes;
@@ -34,8 +37,8 @@ public class CRUDataUpdate {
 
 	private final RRI rri;
 	private final byte[] data;
-	private final long timestamp;
 	private final EUID actionId;
+	private final transient long timestamp;
 
 	public CRUDataUpdate(RRI rri, byte[] data, long timestamp, EUID actionId) {
         this.rri = rri;
@@ -45,24 +48,59 @@ public class CRUDataUpdate {
     }
 
     /**
-	 * The unique id for the this message action
-	 * @return euid for the action
+	 * The unique id for the this update action.
+	 * @return {@link EUID} for the action
 	 */
 	public EUID getActionId() {
-		return actionId;
+		return this.actionId;
 	}
 
+	/**
+	 * The data from this update action.
+	 * @return the data for the action
+	 */
 	public byte[] getData() {
 		return data;
 	}
 
+	/**
+	 * The timestamp from this update action.
+	 * <p>
+	 * Timestamp is in milliseconds since Unix epoch.
+	 *
+	 * @return the timestamp for the action
+	 */
 	public long getTimestamp() {
 		return timestamp;
 	}
 
+	/**
+	 * The resource identifier for this update action.
+	 * @return the resource identifier for the action
+	 */
 	public RRI rri() {
         return rri;
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.actionId, this.rri)
+			* 31 + Arrays.hashCode(this.data);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj instanceof CRUDataUpdate) {
+			CRUDataUpdate that = (CRUDataUpdate) obj;
+			return Objects.equals(this.actionId, that.actionId)
+				&& Objects.equals(this.rri, that.rri)
+				&& Arrays.equals(this.data, that.data);
+		}
+		return false;
+	}
 
 	@Override
 	public String toString() {

@@ -22,37 +22,40 @@
 
 package com.radixdlt.client.application.translate.data;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.radixdlt.client.application.translate.StageActionException;
+import com.radixdlt.identifiers.RRI;
+import java.util.Objects;
 
-import com.radixdlt.client.application.identity.RadixIdentity;
-import com.radixdlt.client.application.translate.AtomToExecutedActionsMapper;
-import com.radixdlt.client.atommodel.cru.CRUDataParticle;
-import com.radixdlt.client.core.atoms.Atom;
-import com.radixdlt.client.core.atoms.particles.SpunParticle;
+public class CRUDataMissingException extends StageActionException {
+	private final RRI rri;
+	private final int nRecords;
 
-import io.reactivex.Observable;
+	public CRUDataMissingException(RRI cruDataRri, int nRecords) {
+		super("Could not find CRU data " + cruDataRri + " to update");
+		this.rri = cruDataRri;
+		this.nRecords = nRecords;
+	}
 
-/**
- * Maps an atom to some number of CRUDataUpdate
- */
-public class AtomToCRUDataUpdateMapper implements AtomToExecutedActionsMapper<CRUDataUpdate> {
+	public RRI rri() {
+		return this.rri;
+	}
 
-	@Override
-	public Class<CRUDataUpdate> actionClass() {
-		return CRUDataUpdate.class;
+	public int nRecords() {
+		return this.nRecords;
 	}
 
 	@Override
-	public Observable<CRUDataUpdate> map(Atom atom, RadixIdentity identity) {
-		long timestamp = atom.getTimestamp();
-		List<CRUDataUpdate> dataUpdates = atom.spunParticles()
-				.map(SpunParticle::getParticle)
-				.filter(p -> p instanceof CRUDataParticle)
-				.map(CRUDataParticle.class::cast)
-				.map(p -> new CRUDataUpdate(p.getRRI(), p.data(), timestamp, p.euid()))
-				.collect(Collectors.toList());
-		return Observable.fromIterable(dataUpdates);
+	public boolean equals(Object obj) {
+		if (!(obj instanceof CRUDataMissingException)) {
+			return false;
+		}
+
+		CRUDataMissingException that = (CRUDataMissingException) obj;
+		return this.nRecords == that.nRecords && Objects.equals(this.rri, that.rri);
 	}
 
+	@Override
+	public int hashCode() {
+		return this.nRecords * 31 + Objects.hashCode(this.rri);
+	}
 }

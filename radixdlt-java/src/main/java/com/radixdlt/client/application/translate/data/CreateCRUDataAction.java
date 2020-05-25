@@ -26,33 +26,35 @@ import java.util.Objects;
 
 import com.radixdlt.client.application.translate.Action;
 import com.radixdlt.identifiers.RRI;
+import com.radixdlt.utils.Bytes;
 
 /**
- * An Action object which sends a data transaction from one account to another.
+ * An Action object which create a CRU data object.
  */
-public final class CreateDataAction implements Action {
-    private final RRI rri;
-    private final byte[] data;
+public final class CreateCRUDataAction implements Action {
+	private final RRI rri;
+	private final byte[] data;
 
-    private CreateDataAction(RRI rri, byte[] data) {
-        this.rri = rri;
-        this.data = Objects.requireNonNull(data);
-    }
+	private CreateCRUDataAction(RRI rri, byte[] data) {
+		this.rri = rri;
+		this.data = Objects.requireNonNull(data);
+	}
 
-    public static CreateDataAction create(RRI rri, byte[] data) {
-        return new CreateDataAction(rri, data);
-    }
+	public static CreateCRUDataAction create(RRI rri, byte[] data) {
+		return new CreateCRUDataAction(rri, data);
+	}
 
-    public byte[] getData() {
-        return data;
-    }
+	public byte[] getData() {
+		return this.data;
+	}
 
-    public RRI getRRI() {
-        return rri;
-    }
+	public RRI getRRI() {
+		return this.rri;
+	}
 
-    @Override
-    public String toString() {
-        return "Updating data FOR resource" + rri;
-    }
+	@Override
+	public String toString() {
+    	String dataString = this.data == null ? "null" : Bytes.toBase64String(this.data);
+        return String.format("%s[%s:%s]", getClass().getSimpleName(), this.rri, dataString);
+	}
 }

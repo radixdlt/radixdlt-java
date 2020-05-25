@@ -44,13 +44,13 @@ import com.radixdlt.client.application.translate.StatelessActionToParticleGroups
 import com.radixdlt.client.application.translate.data.AtomToDecryptedMessageMapper;
 import com.radixdlt.client.application.translate.data.CRUDataUpdate;
 import com.radixdlt.client.application.translate.data.AtomToCRUDataUpdateMapper;
-import com.radixdlt.client.application.translate.data.CreateDataAction;
+import com.radixdlt.client.application.translate.data.CreateCRUDataAction;
 import com.radixdlt.client.application.translate.data.CreateDataToParticleGroupsMapper;
 import com.radixdlt.client.application.translate.data.DecryptedMessage;
 import com.radixdlt.client.application.translate.data.SendMessageAction;
 import com.radixdlt.client.application.translate.data.SendMessageToParticleGroupsMapper;
-import com.radixdlt.client.application.translate.data.UpdateDataAction;
-import com.radixdlt.client.application.translate.data.UpdateDataToParticleGroupsMapper;
+import com.radixdlt.client.application.translate.data.UpdateCRUDataAction;
+import com.radixdlt.client.application.translate.data.UpdateCRUDataToParticleGroupsMapper;
 import com.radixdlt.client.application.translate.tokens.AtomToTokenTransfersMapper;
 import com.radixdlt.client.application.translate.tokens.BurnTokensAction;
 import com.radixdlt.client.application.translate.tokens.BurnTokensActionMapper;
@@ -152,10 +152,10 @@ public class RadixApplicationAPI {
 				SendMessageAction.class,
 				new SendMessageToParticleGroupsMapper(ECKeyPair::generateNew)
 			)
-			.addStatelessParticlesMapper(CreateDataAction.class, new CreateDataToParticleGroupsMapper())
+			.addStatelessParticlesMapper(CreateCRUDataAction.class, new CreateDataToParticleGroupsMapper())
 			.addStatelessParticlesMapper(CreateTokenAction.class, new CreateTokenToParticleGroupsMapper())
 			.addStatelessParticlesMapper(PutUniqueIdAction.class, new PutUniqueIdToParticleGroupsMapper())
-			.addStatefulParticlesMapper(UpdateDataAction.class, new UpdateDataToParticleGroupsMapper())
+			.addStatefulParticlesMapper(UpdateCRUDataAction.class, new UpdateCRUDataToParticleGroupsMapper())
 			.addStatefulParticlesMapper(MintTokensAction.class, new MintTokensActionMapper())
 			.addStatefulParticlesMapper(BurnTokensAction.class, new BurnTokensActionMapper())
 			.addStatefulParticlesMapper(TransferTokensAction.class, new TransferTokensToParticleGroupsMapper())
@@ -444,49 +444,49 @@ public class RadixApplicationAPI {
 		return execute(sendMessageAction);
 	}
 
-    /**
-     * Returns a never ending stream of data stored at a given address. The pull()
-     * method must be called to continually retrieve the latest messages.
-     *
-     * @param address the address to retrieve data from
-     * @return a cold observable of the messages at the given address
-     */
-    public Observable<CRUDataUpdate> observeData(RadixAddress address) {
-        Objects.requireNonNull(address);
-        return observeActions(CRUDataUpdate.class, address);
-    }
+	/**
+	 * Returns a never ending stream of data stored at a given address. The pull()
+	 * method must be called to continually retrieve the latest messages.
+	 *
+	 * @param address the address to retrieve data from
+	 * @return a cold observable of the messages at the given address
+	 */
+	public Observable<CRUDataUpdate> observeData(RadixAddress address) {
+		Objects.requireNonNull(address);
+		return observeActions(CRUDataUpdate.class, address);
+	}
 
-    /**
-     * Creates a data resource and store it
-     *
-     * @param rri the resource which will be associated with this data
-     * @param data to be store
-     * @return result of the create data action
-     */
-    public Result createData(RRI rri, byte[] data) {
-        RadixAddress address = getAddress();
-        if (!rri.getAddress().equals(address)) {
-            throw new IllegalArgumentException();
-        }
-        CreateDataAction createDataAction = CreateDataAction.create(rri, data);
-        return execute(createDataAction);
-    }
+	/**
+	 * Creates a data resource and stores it.
+	 *
+	 * @param rri  the resource which will be associated with this data
+	 * @param data to be storedg
+	 * @return result of the create data action
+	 */
+	public Result createData(RRI rri, byte[] data) {
+		RadixAddress address = getAddress();
+		if (!rri.getAddress().equals(address)) {
+			throw new IllegalArgumentException();
+		}
+		CreateCRUDataAction createDataAction = CreateCRUDataAction.create(rri, data);
+		return execute(createDataAction);
+	}
 
-    /**
-     * Update an existing data resource
-     *
-     * @param rri the resource which  is associated with this data
-     * @param data new version of data
-     * @return result of the send message execution
-     */
-    public Result updateData(RRI rri, byte[] data) {
-        RadixAddress address = getAddress();
-        if (!rri.getAddress().equals(address)) {
-            throw new IllegalArgumentException();
-        }
-        UpdateDataAction updateAction = UpdateDataAction.create(rri, data);
-        return execute(updateAction);
-    }
+	/**
+	 * Update an existing data resource
+	 *
+	 * @param rri  the resource which is associated with this data
+	 * @param data new version of data
+	 * @return result of the send message execution
+	 */
+	public Result updateData(RRI rri, byte[] data) {
+		RadixAddress address = getAddress();
+		if (!rri.getAddress().equals(address)) {
+			throw new IllegalArgumentException();
+		}
+		UpdateCRUDataAction updateAction = UpdateCRUDataAction.create(rri, data);
+		return execute(updateAction);
+	}
 
 	/**
 	 * Returns a never ending stream of token transfers stored at the current address.
