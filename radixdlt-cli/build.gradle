@@ -30,6 +30,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'groovy'
+apply plugin: 'maven'
 repositories {
     jcenter()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
