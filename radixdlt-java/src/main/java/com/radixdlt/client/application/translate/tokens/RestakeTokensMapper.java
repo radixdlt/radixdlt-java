@@ -30,7 +30,7 @@ import com.radixdlt.client.application.translate.StatefulActionToParticleGroupsM
 import com.radixdlt.client.atommodel.tokens.MutableSupplyTokenDefinitionParticle.TokenTransition;
 import com.radixdlt.client.atommodel.tokens.StakedTokensParticle;
 import com.radixdlt.client.atommodel.tokens.TokenPermission;
-import com.radixdlt.client.atommodel.tokens.TransferrableTokensParticle;
+import com.radixdlt.client.atommodel.tokens.StakedTokensParticle;
 import com.radixdlt.client.atommodel.validators.RegisteredValidatorParticle;
 import com.radixdlt.client.core.atoms.ParticleGroup;
 import com.radixdlt.client.core.atoms.particles.Particle;
@@ -38,7 +38,6 @@ import com.radixdlt.client.core.atoms.particles.SpunParticle;
 import com.radixdlt.client.core.fungible.FungibleTransitionMapper;
 import com.radixdlt.client.core.fungible.NotEnoughFungiblesException;
 import com.radixdlt.identifiers.RRI;
-
 import com.radixdlt.utils.UInt256;
 
 import java.util.ArrayList;
@@ -50,17 +49,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Maps a stake tokens action to the particles necessary to be included in an atom.
+ * Maps a restake tokens action to the particles necessary to be included in an atom.
  */
-public class StakeTokensMapper implements StatefulActionToParticleGroupsMapper<StakeTokensAction> {
-	public StakeTokensMapper() {
+public class RestakeTokensMapper implements StatefulActionToParticleGroupsMapper<RestakeTokensAction> {
+	public RestakeTokensMapper() {
 		// Empty on purpose
 	}
 
-	private static List<SpunParticle> mapToParticles(StakeTokensAction stake, List<TransferrableTokensParticle> currentParticles)
+	private static List<SpunParticle> mapToParticles(RestakeTokensAction restake, List<StakedTokensParticle> currentParticles)
 		throws NotEnoughFungiblesException {
 
-		final UInt256 totalAmountToRedelegate = TokenUnitConversions.unitsToSubunits(stake.getAmount());
+		final UInt256 totalAmountToRedelegate = TokenUnitConversions.unitsToSubunits(restake.getAmount());
 		if (currentParticles.isEmpty()) {
 			throw new NotEnoughFungiblesException(totalAmountToRedelegate, UInt256.ZERO);
 		}
@@ -69,23 +68,24 @@ public class StakeTokensMapper implements StatefulActionToParticleGroupsMapper<S
 		final UInt256 granularity = currentParticles.get(0).getGranularity();
 		final Map<TokenTransition, TokenPermission> permissions = currentParticles.get(0).getTokenPermissions();
 
-		FungibleTransitionMapper<TransferrableTokensParticle, StakedTokensParticle> mapper = new FungibleTransitionMapper<>(
-			TransferrableTokensParticle::getAmount,
+		FungibleTransitionMapper<StakedTokensParticle, StakedTokensParticle> mapper = new FungibleTransitionMapper<>(
+			StakedTokensParticle::getAmount,
 			amt ->
-				new TransferrableTokensParticle(
+				new StakedTokensParticle(
+					restake.getOldDelegate(),
 					amt,
 					granularity,
-					stake.getFrom(),
+					restake.getFrom(),
 					System.nanoTime(),
 					token,
 					permissions
 				),
 			amt ->
 				new StakedTokensParticle(
-					stake.getDelegate(),
+					restake.getNewDelegate(),
 					totalAmountToRedelegate,
 					granularity,
-					stake.getFrom(),
+					restake.getFrom(),
 					System.nanoTime(),
 					token,
 					permissions
@@ -96,15 +96,15 @@ public class StakeTokensMapper implements StatefulActionToParticleGroupsMapper<S
 	}
 
 	@Override
-	public Set<ShardedParticleStateId> requiredState(StakeTokensAction action) {
+	public Set<ShardedParticleStateId> requiredState(RestakeTokensAction action) {
 		return ImmutableSet.of(
-			ShardedParticleStateId.of(TransferrableTokensParticle.class, action.getFrom()),
-			ShardedParticleStateId.of(RegisteredValidatorParticle.class, action.getDelegate())
+			ShardedParticleStateId.of(StakedTokensParticle.class, action.getFrom()),
+			ShardedParticleStateId.of(RegisteredValidatorParticle.class, action.getNewDelegate())
 		);
 	}
 
 	@Override
-	public List<ParticleGroup> mapToParticleGroups(StakeTokensAction stake, Stream<Particle> store) throws StageActionException {
+	public List<ParticleGroup> mapToParticleGroups(RestakeTokensAction stake, Stream<Particle> store) throws StageActionException {
 		final RRI tokenRef = stake.getRRI();
 
 		List<SpunParticle> particles = new ArrayList<>();
@@ -116,7 +116,7 @@ public class StakeTokensMapper implements StatefulActionToParticleGroupsMapper<S
 			.stream()
 			.map(RegisteredValidatorParticle.class::cast)
 			.findFirst()
-			.orElseThrow(() -> StakeNotPossibleException.notRegistered(stake.getDelegate()));
+			.orElseThrow(() -> StakeNotPossibleException.notRegistered(stake.getNewDelegate()));
 		if (!delegate.allowsDelegator(stake.getFrom())) {
 			throw StakeNotPossibleException.notAllowed(delegate.getAddress(), stake.getFrom());
 		}
@@ -124,10 +124,10 @@ public class StakeTokensMapper implements StatefulActionToParticleGroupsMapper<S
 		particles.add(SpunParticle.down(delegate));
 		particles.add(SpunParticle.up(newDelegate));
 
-		List<TransferrableTokensParticle> stakeConsumables = inputParticlesByClass
-			.getOrDefault(TransferrableTokensParticle.class, ImmutableList.of())
+		List<StakedTokensParticle> stakeConsumables = inputParticlesByClass
+			.getOrDefault(StakedTokensParticle.class, ImmutableList.of())
 			.stream()
-			.map(TransferrableTokensParticle.class::cast)
+			.map(StakedTokensParticle.class::cast)
 			.filter(p -> p.getTokenDefinitionReference().equals(tokenRef))
 			.collect(Collectors.toList());
 
